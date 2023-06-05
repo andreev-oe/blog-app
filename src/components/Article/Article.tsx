@@ -2,34 +2,36 @@ import React from 'react'
 
 import like from '../../assets/like.png'
 import authorDummy from '../../assets/author-dummy.png'
+import { IArticle } from '../../types'
 
 import classes from './Article.module.scss'
 
-const Article = () => {
+const Article = ({ title, favoritesCount, tagList, description, createdAt, author }: IArticle) => {
+  const { username, image } = author
+  // TODO add secondary tag styles
   return (
     <article className={classes.article}>
       <div className={classes['article-content']}>
         <div className={classes['title-wrapper']}>
-          <h2 className={classes.title}>Some article title</h2>
+          <h2 className={classes.title}>{title}</h2>
           <img className={classes['like-icon']} src={like} alt={'likes'} />
-          <span className={classes['likes-count']}>12</span>
+          <span className={classes['likes-count']}>{favoritesCount}</span>
         </div>
         <div className={classes.tags}>
-          <div className={classes.tag}>Tag1</div>
-          <div className={`${classes.tag} ${classes['tag__secondary']}`}>SomeTag</div>
+          {tagList.map((tag, index) => (
+            <div key={index} className={classes.tag}>
+              {tag}
+            </div>
+          ))}
         </div>
-        <p className={classes.text}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat.
-        </p>
+        <p className={classes.text}>{description}</p>
       </div>
       <div className={classes['article-author']}>
         <div className={classes['author-wrapper']}>
-          <p className={classes['author-name']}>John Doe</p>
-          <p className={classes.date}>March 5, 2020 </p>
+          <p className={classes['author-name']}>{username}</p>
+          <p className={classes.date}>{createdAt}</p>
         </div>
-        <img className={classes['author-photo']} src={authorDummy} alt={'author-photo'} />
+        <img className={classes['author-photo']} src={image ? image : authorDummy} alt={'author-photo'} />
       </div>
     </article>
   )
