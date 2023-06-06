@@ -6,6 +6,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "antd": "^5.5.2",
     "date-fns": "^2.30.0",
+    "markdown-to-jsx": "^7.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.7",

@@ -1,36 +1,24 @@
-import React, { useEffect } from 'react'
-import { Pagination } from 'antd'
+import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import { articlesSlice, getArticles } from '../../store/articlesSlice'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import Header from '../Header'
+import MainPage from '../MainPage'
 import ArticlesList from '../ArticlesList'
+import Article from '../Article'
 
 import classes from './App.module.scss'
 
-const ARTICLES_PER_PAGE = 5
-
 function App() {
-  const dispatch = useAppDispatch()
-  const { activePage, articlesCount, loading, error } = useAppSelector((state) => state.articles)
-  const { setActivePage } = articlesSlice.actions
-  useEffect(() => {
-    dispatch(getArticles(activePage * ARTICLES_PER_PAGE))
-  }, [dispatch, activePage])
   return (
     <div className={classes['page-wrapper']}>
-      <Header />
-      <ArticlesList />
-      {loading || error ? null : (
-        <Pagination
-          current={activePage}
-          pageSize={ARTICLES_PER_PAGE}
-          onChange={(page) => dispatch(setActivePage(page))}
-          showSizeChanger={false}
-          total={articlesCount}
-          className={classes.pagination}
-        />
-      )}
+      <BrowserRouter>
+        <Routes>
+          <Route path={'/'} element={<MainPage />}>
+            <Route index element={<ArticlesList />} />
+            <Route path={'articles'} element={<ArticlesList />} />
+            <Route path={'articles/:slug'} element={<Article />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }
