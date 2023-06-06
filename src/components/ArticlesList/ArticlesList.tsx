@@ -1,14 +1,22 @@
-import React from 'react'
-import { Alert, Spin } from 'antd'
+import React, { useEffect } from 'react'
+import { Alert, Pagination, Spin } from 'antd'
 
 import classes from '../ArticlesList/ArticlesList.module.scss'
 import ArticlePreview from '../ArticlePreview'
-import { useAppSelector } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { articlesSlice, getArticles } from '../../store/articlesSlice'
 
 const ERROR_MESSAGE = 'Sorry, content not loaded, check your internet connection and try to update page'
+const ARTICLES_PER_PAGE = 5
 
 const ArticlesList = () => {
-  // TODO style spinner
+  // TODO style spinner and pagination
+  const dispatch = useAppDispatch()
+  const { activePage, articlesCount } = useAppSelector((state) => state.articles)
+  const { setActivePage } = articlesSlice.actions
+  useEffect(() => {
+    dispatch(getArticles(activePage * ARTICLES_PER_PAGE))
+  }, [dispatch, activePage])
   const { articles, error, loading } = useAppSelector((state) => state.articles)
   const showArticles =
     !loading && !error && articles
@@ -23,11 +31,23 @@ const ArticlesList = () => {
   ) : null
   const errorMessage = error ? <Alert showIcon type={'error'} message={ERROR_MESSAGE} /> : null
   return (
-    <section className={classes['articles-list']}>
-      {errorMessage}
-      {spinner}
-      {showArticles}
-    </section>
+    <>
+      <section className={classes['articles-list']}>
+        {errorMessage}
+        {spinner}
+        {showArticles}
+      </section>
+      {error ? null : (
+        <Pagination
+          current={activePage}
+          pageSize={ARTICLES_PER_PAGE}
+          onChange={(page) => dispatch(setActivePage(page))}
+          showSizeChanger={false}
+          total={articlesCount}
+          className={classes.pagination}
+        />
+      )}
+    </>
   )
 }
 
