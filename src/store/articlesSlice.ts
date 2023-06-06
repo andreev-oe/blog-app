@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { IState } from '../types'
 
@@ -8,12 +8,14 @@ const defaultState: IState = {
   loading: false,
   error: false,
   articlesCount: 0,
+  activePage: 1,
 }
+const ARTICLES_PER_PAGE = 5
 
-const getArticles = createAsyncThunk<IState, undefined, { rejectValue: boolean }>(
+const getArticles = createAsyncThunk<IState, number, { rejectValue: boolean }>(
   'articles/getArticles',
-  async function (_, { rejectWithValue }) {
-    const response = await fetch(`${baseUrl}articles?limit=${5}&offset=${0}`)
+  async function (offset, { rejectWithValue }) {
+    const response = await fetch(`${baseUrl}articles?limit=${ARTICLES_PER_PAGE}&offset=${offset}`)
     if (!response.ok) {
       return rejectWithValue(true)
     }
@@ -25,7 +27,11 @@ const getArticles = createAsyncThunk<IState, undefined, { rejectValue: boolean }
 const articlesSlice = createSlice({
   name: 'articles',
   initialState: defaultState,
-  reducers: {},
+  reducers: {
+    setActivePage(state, action: PayloadAction<number>) {
+      state.activePage = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getArticles.pending, (state) => {
@@ -42,4 +48,4 @@ const articlesSlice = createSlice({
 })
 
 export default articlesSlice.reducer
-export { getArticles }
+export { articlesSlice, getArticles }

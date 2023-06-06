@@ -21,4 +21,5 @@ export interface IState {
   loading?: boolean
   error?: boolean
   articlesCount: number
+  activePage: number
 }

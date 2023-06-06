@@ -1,24 +1,34 @@
 import React, { useEffect } from 'react'
 import { Pagination } from 'antd'
 
-import { getArticles } from '../../store/articlesSlice'
+import { articlesSlice, getArticles } from '../../store/articlesSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import Header from '../Header'
 import ArticlesList from '../ArticlesList'
 
 import classes from './App.module.scss'
 
+const ARTICLES_PER_PAGE = 5
+
 function App() {
   const dispatch = useAppDispatch()
+  const { activePage, articlesCount } = useAppSelector((state) => state.articles)
+  const { setActivePage } = articlesSlice.actions
   useEffect(() => {
-    dispatch(getArticles())
-  }, [dispatch])
-  const articlesCount = useAppSelector((state) => state.articles.articlesCount)
+    dispatch(getArticles(activePage * ARTICLES_PER_PAGE))
+  }, [dispatch, activePage])
   return (
     <div className={classes['page-wrapper']}>
       <Header />
       <ArticlesList />
-      <Pagination total={articlesCount / 5} className={classes.pagination} />
+      <Pagination
+        current={activePage}
+        pageSize={ARTICLES_PER_PAGE}
+        onChange={(page) => dispatch(setActivePage(page))}
+        showSizeChanger={false}
+        total={articlesCount}
+        className={classes.pagination}
+      />
     </div>
   )
 }
