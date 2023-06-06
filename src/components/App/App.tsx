@@ -12,7 +12,7 @@ const ARTICLES_PER_PAGE = 5
 
 function App() {
   const dispatch = useAppDispatch()
-  const { activePage, articlesCount } = useAppSelector((state) => state.articles)
+  const { activePage, articlesCount, loading, error } = useAppSelector((state) => state.articles)
   const { setActivePage } = articlesSlice.actions
   useEffect(() => {
     dispatch(getArticles(activePage * ARTICLES_PER_PAGE))
@@ -21,14 +21,16 @@ function App() {
     <div className={classes['page-wrapper']}>
       <Header />
       <ArticlesList />
-      <Pagination
-        current={activePage}
-        pageSize={ARTICLES_PER_PAGE}
-        onChange={(page) => dispatch(setActivePage(page))}
-        showSizeChanger={false}
-        total={articlesCount}
-        className={classes.pagination}
-      />
+      {loading || error ? null : (
+        <Pagination
+          current={activePage}
+          pageSize={ARTICLES_PER_PAGE}
+          onChange={(page) => dispatch(setActivePage(page))}
+          showSizeChanger={false}
+          total={articlesCount}
+          className={classes.pagination}
+        />
+      )}
     </div>
   )
 }

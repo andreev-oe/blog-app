@@ -19,8 +19,7 @@ const getArticles = createAsyncThunk<IState, number, { rejectValue: boolean }>(
     if (!response.ok) {
       return rejectWithValue(true)
     }
-    const data = await response.json()
-    return data
+    return await response.json()
   }
 )
 
@@ -43,6 +42,10 @@ const articlesSlice = createSlice({
         state.articlesCount = action.payload.articlesCount
         state.loading = false
         state.error = false
+      })
+      .addCase(getArticles.rejected, (state) => {
+        state.loading = false
+        state.error = true
       })
   },
 })
