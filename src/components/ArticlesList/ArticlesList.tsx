@@ -8,6 +8,7 @@ import { useAppSelector } from '../../hooks'
 const ERROR_MESSAGE = 'Sorry, content not loaded, check your internet connection and try to update page'
 
 const ArticlesList = () => {
+  // TODO style spinner
   const { articles, error, loading } = useAppSelector((state) => state.articles)
   const showArticles =
     !loading && !error && articles

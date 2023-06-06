@@ -9,6 +9,7 @@ import { articlesSlice, getArticles } from '../../store/articlesSlice'
 const ARTICLES_PER_PAGE = 5
 
 const MainPage = () => {
+  // TODO hide pagination then article is open
   const dispatch = useAppDispatch()
   const { activePage, articlesCount, loading, error } = useAppSelector((state) => state.articles)
   const { setActivePage } = articlesSlice.actions

@@ -4,15 +4,19 @@ import { Link } from 'react-router-dom'
 import like from '../../assets/like.png'
 import authorDummy from '../../assets/author-dummy.png'
 import { IArticle } from '../../types'
+import { articlesSlice } from '../../store/articlesSlice'
+import { useAppDispatch } from '../../hooks'
 
 import classes from './ArticlePreview.module.scss'
 
 const ArticlePreview = ({ title, favoritesCount, tagList, description, createdAt, author, slug }: IArticle) => {
   const { username, image } = author
+  const dispatch = useAppDispatch()
+  const { setActiveArticleSlug } = articlesSlice.actions
   // TODO add secondary tag styles
   return (
     <Link to={`/articles/${slug}`} className={classes.link}>
-      <article className={classes.article}>
+      <article onClick={() => dispatch(setActiveArticleSlug(slug))} className={classes.article}>
         <div className={classes['article-content']}>
           <div className={classes['title-wrapper']}>
             <h2 className={classes.title}>{title}</h2>

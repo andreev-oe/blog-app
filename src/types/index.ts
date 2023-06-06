@@ -18,8 +18,10 @@ export interface IArticle {
 }
 export interface IState {
   articles: IArticle[]
+  article?: IArticle
   loading?: boolean
   error?: boolean
   articlesCount: number
   activePage: number
+  activeArticleSlug: string
 }

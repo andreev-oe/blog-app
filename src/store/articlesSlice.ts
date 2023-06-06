@@ -9,6 +9,7 @@ const defaultState: IState = {
   error: false,
   articlesCount: 0,
   activePage: 1,
+  activeArticleSlug: '',
 }
 const ARTICLES_PER_PAGE = 5
 
@@ -22,6 +23,16 @@ const getArticles = createAsyncThunk<IState, number, { rejectValue: boolean }>(
     return await response.json()
   }
 )
+const getArticle = createAsyncThunk<IState, string, { rejectValue: boolean }>(
+  'articles/getArticle',
+  async function (slug, { rejectWithValue }) {
+    const response = await fetch(`${baseUrl}articles/${slug}`)
+    if (!response.ok) {
+      return rejectWithValue(true)
+    }
+    return await response.json()
+  }
+)
 
 const articlesSlice = createSlice({
   name: 'articles',
@@ -29,6 +40,9 @@ const articlesSlice = createSlice({
   reducers: {
     setActivePage(state, action: PayloadAction<number>) {
       state.activePage = action.payload
+    },
+    setActiveArticleSlug(state, action: PayloadAction<string>) {
+      state.activeArticleSlug = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -47,8 +61,21 @@ const articlesSlice = createSlice({
         state.loading = false
         state.error = true
       })
+      .addCase(getArticle.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(getArticle.fulfilled, (state, action) => {
+        state.article = action.payload.article
+        state.loading = false
+        state.error = false
+      })
+      .addCase(getArticle.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
   },
 })
 
 export default articlesSlice.reducer
-export { articlesSlice, getArticles }
+export { articlesSlice, getArticles, getArticle }
