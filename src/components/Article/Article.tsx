@@ -32,7 +32,9 @@ const Article = () => {
             <div className={classes['article-content']}>
               <div className={classes['title-wrapper']}>
                 <h2 className={classes.title}>{title}</h2>
-                <img className={classes['like-icon']} src={like} alt={'likes'} />
+                <button type={'button'} className={classes.button} disabled>
+                  <img className={classes['like-icon']} src={like} alt={'likes'} />
+                </button>
                 <span className={classes['likes-count']}>{favoritesCount}</span>
               </div>
               <div className={classes.tags}>

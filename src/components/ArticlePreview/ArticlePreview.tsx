@@ -15,32 +15,34 @@ const ArticlePreview = ({ title, favoritesCount, tagList, description, createdAt
   const { setActiveArticleSlug } = articlesSlice.actions
   // TODO add secondary tag styles
   return (
-    <Link to={`/articles/${slug}`} className={classes.link}>
-      <article onClick={() => dispatch(setActiveArticleSlug(slug))} className={classes.article}>
-        <div className={classes['article-content']}>
-          <div className={classes['title-wrapper']}>
+    <article onClick={() => dispatch(setActiveArticleSlug(slug))} className={classes.article}>
+      <div className={classes['article-content']}>
+        <div className={classes['title-wrapper']}>
+          <Link to={`/articles/${slug}`} className={classes.link}>
             <h2 className={classes.title}>{title}</h2>
+          </Link>
+          <button type={'button'} className={classes.button} disabled>
             <img className={classes['like-icon']} src={like} alt={'likes'} />
-            <span className={classes['likes-count']}>{favoritesCount}</span>
-          </div>
-          <div className={classes.tags}>
-            {tagList.map((tag, index) => (
-              <div key={index} className={classes.tag}>
-                {tag}
-              </div>
-            ))}
-          </div>
-          <p className={classes.text}>{description}</p>
+          </button>
+          <span className={classes['likes-count']}>{favoritesCount}</span>
         </div>
-        <div className={classes['article-author']}>
-          <div className={classes['author-wrapper']}>
-            <p className={classes['author-name']}>{username}</p>
-            <p className={classes.date}>{createdAt}</p>
-          </div>
-          <img className={classes['author-photo']} src={image ? image : authorDummy} alt={'author-photo'} />
+        <div className={classes.tags}>
+          {tagList.map((tag, index) => (
+            <div key={index} className={classes.tag}>
+              {tag}
+            </div>
+          ))}
         </div>
-      </article>
-    </Link>
+        <p className={classes.text}>{description}</p>
+      </div>
+      <div className={classes['article-author']}>
+        <div className={classes['author-wrapper']}>
+          <p className={classes['author-name']}>{username}</p>
+          <p className={classes.date}>{createdAt}</p>
+        </div>
+        <img className={classes['author-photo']} src={image ? image : authorDummy} alt={'author-photo'} />
+      </div>
+    </article>
   )
 }
 

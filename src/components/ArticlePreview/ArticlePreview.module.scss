@@ -4,7 +4,7 @@
   cursor: pointer;
 }
 .article {
-  cursor: pointer;
+  cursor: default;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -27,6 +27,12 @@
 .title-wrapper {
   display: flex;
   align-items: center;
+}
+.button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
 }
 .title {
   font-family: 'Inter', sans-serif;

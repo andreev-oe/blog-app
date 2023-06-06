@@ -24,6 +24,12 @@
   display: flex;
   align-items: center;
 }
+.button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+}
 .title {
   font-family: 'Inter', sans-serif;
   color: #1890ff;
