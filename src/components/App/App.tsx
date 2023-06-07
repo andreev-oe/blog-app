@@ -4,7 +4,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MainPage from '../MainPage'
 import ArticlesList from '../ArticlesList'
 import Article from '../Article'
-import Registration from '../Registration'
+import SignUp from '../SignUp'
+import SignIn from '../SignIn'
 
 import classes from './App.module.scss'
 
@@ -17,7 +18,8 @@ function App() {
             <Route index element={<ArticlesList />} />
             <Route path={'articles'} element={<ArticlesList />} />
             <Route path={'articles/:slug'} element={<Article />} />
-            <Route path={'sign-up'} element={<Registration />} />
+            <Route path={'sign-up'} element={<SignUp />} />
+            <Route path={'sign-in'} element={<SignIn />} />
           </Route>
         </Routes>
       </BrowserRouter>

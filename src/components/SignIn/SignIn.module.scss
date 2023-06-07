@@ -8,7 +8,7 @@
   border-radius: 6px;
   background: #ffffff;
   width: 384px;
-  height: 599px;
+  height: 374px;
   box-sizing: border-box;
   color: #262626;
   font-family: 'Roboto', sans-serif;
@@ -32,14 +32,6 @@
   align-items: flex-start;
   gap: 2px;
 }
-.label:last-of-type {
-  cursor: pointer;
-  padding: 8px 0 8px 24px;
-  margin-top: 9px;
-  width: 100%;
-  border-top: 1px solid #d9d9d9;
-  flex-direction: row;
-}
 .input {
   box-sizing: border-box;
   font-size: 16px;
@@ -50,33 +42,11 @@
   border-radius: 4px;
   background: #ffffff;
   padding: 8px 12px;
-}
-.input::placeholder {
-  font-style: normal;
-  font-size: 16px;
-  line-height: 16px;
-  color: #bfbfbf;
-}
-.checkbox {
-  position: absolute;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  margin-left: -24px;
-  &:before {
-    content: '';
-    display: block;
-    background-color: #1890ff;
-    border-radius: 2px;
-    width: 16px;
-    height: 16px;
-  }
-  &:checked {
-    &:before {
-      content: url('../../assets/check.png');
-      padding-left: 2px;
-      box-sizing: border-box;
-    }
+  &::placeholder {
+    font-style: normal;
+    font-size: 16px;
+    line-height: 16px;
+    color: #bfbfbf;
   }
 }
 .agreement {
@@ -94,9 +64,9 @@
   border-radius: 4px;
   width: 319px;
   height: 40px;
-}
-.button:active {
-  opacity: 0.9;
+  &:active {
+    opacity: 0.9;
+  }
 }
 .info {
   margin: 8px 0;
@@ -108,4 +78,10 @@
 .link {
   text-decoration: none;
   color: #1890ff;
+  &:active {
+    opacity: 0.7;
+  }
+  &:visited {
+    color: #a625c2;
+  }
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import classes from './Registration.module.scss'
+import classes from './SignUp.module.scss'
 
-const Registration = () => {
+const SignUp = () => {
   return (
     <section className={classes.section}>
       <h2 className={classes.title}>Create new account</h2>
@@ -42,4 +42,4 @@ const Registration = () => {
   )
 }
 
-export default Registration
+export default SignUp
