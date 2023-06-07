@@ -6,7 +6,7 @@ import classes from './SignIn.module.scss'
 const SignIn = () => {
   return (
     <section className={classes.section}>
-      <h2 className={classes.title}>Create new account</h2>
+      <h2 className={classes.title}>Sign In</h2>
       <form action="#" className={classes.form}>
         <label htmlFor="email" className={classes.label}>
           <span>Email address</span>
@@ -17,7 +17,7 @@ const SignIn = () => {
           <input className={classes.input} id="password" type="password" name="password" placeholder={'Password'} />
         </label>
         <button className={classes.button} type="submit">
-          Create
+          Login
         </button>
       </form>
       <p className={classes.info}>

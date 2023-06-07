@@ -6,6 +6,9 @@ import classes from '../HeaderButtons/HeaderButtom.module.scss'
 const HeaderButtons = () => {
   return (
     <div className={classes['authorize-buttons']}>
+      <Link to={'/profile'}>
+        <button className={`${classes.profile} ${classes.buttons}`}>Profile</button>
+      </Link>
       <Link to={'/sign-in'}>
         <button className={`${classes['sign-in']} ${classes.buttons}`}>Sign In</button>
       </Link>
