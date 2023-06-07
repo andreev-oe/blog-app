@@ -19,6 +19,7 @@ const HeaderButtons = () => {
       <Link to={'/sign-up'}>
         <button className={`${classes['sign-up']} ${classes.button}`}>Sign Up</button>
       </Link>
+      <button className={`${classes['log-out']} ${classes.button}`}>Log Out</button>
     </div>
   )
 }
