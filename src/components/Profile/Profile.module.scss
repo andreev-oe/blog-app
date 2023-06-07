@@ -8,7 +8,7 @@
   border-radius: 6px;
   background: #ffffff;
   width: 384px;
-  height: 498px;
+  height: auto;
   box-sizing: border-box;
   color: #262626;
   font-family: 'Roboto', sans-serif;
@@ -48,6 +48,9 @@
     line-height: 16px;
     color: #bfbfbf;
   }
+  &--error {
+    border-color: #f5222d;
+  }
 }
 .button {
   cursor: pointer;
@@ -63,4 +66,7 @@
   &:active {
     opacity: 0.9;
   }
+}
+.error-text {
+  color: #f5222d;
 }

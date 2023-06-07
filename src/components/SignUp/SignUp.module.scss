@@ -8,7 +8,7 @@
   border-radius: 6px;
   background: #ffffff;
   width: 384px;
-  height: 599px;
+  height: auto;
   box-sizing: border-box;
   color: #262626;
   font-family: 'Roboto', sans-serif;
@@ -55,6 +55,9 @@
     font-size: 16px;
     line-height: 16px;
     color: #bfbfbf;
+  }
+  &--error {
+    border-color: #f5222d;
   }
 }
 .checkbox {
@@ -114,4 +117,7 @@
   &:visited {
     color: #a625c2;
   }
+}
+.error-text {
+  color: #f5222d;
 }

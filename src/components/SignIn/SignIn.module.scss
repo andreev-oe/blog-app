@@ -8,7 +8,7 @@
   border-radius: 6px;
   background: #ffffff;
   width: 384px;
-  height: 374px;
+  height: auto;
   box-sizing: border-box;
   color: #262626;
   font-family: 'Roboto', sans-serif;
@@ -48,6 +48,9 @@
     line-height: 16px;
     color: #bfbfbf;
   }
+  &--error {
+    border-color: #f5222d;
+  }
 }
 .agreement {
   font-size: 14px;
@@ -84,4 +87,7 @@
   &:visited {
     color: #a625c2;
   }
+}
+.error-text {
+  color: #f5222d;
 }
