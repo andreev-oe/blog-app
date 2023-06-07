@@ -1,8 +1,9 @@
 .authorize-buttons {
   display: flex;
+  align-items: center;
   gap: 19px;
 }
-.buttons {
+.button {
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
@@ -16,6 +17,17 @@
 .profile {
 }
 .sign-in {
+}
+.article-button {
+  padding: 0;
+  width: 112px;
+  height: 31px;
+  border: 1px solid #52c41a;
+  border-radius: 5px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  color: #52c41a;
 }
 .sign-up {
   border: 1px solid #52c41a;
