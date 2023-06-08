@@ -25,3 +25,15 @@ export interface IState {
   activePage: number
   activeArticleSlug: string
 }
+export interface IUser {
+  user: {
+    username: string
+    email: string
+    password: string
+    token?: string
+    bio?: string
+    image?: string
+  }
+  loading?: boolean
+  error?: boolean
+}

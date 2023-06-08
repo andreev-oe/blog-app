@@ -2,6 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import { useAppDispatch } from '../../hooks'
+import { signUpUser } from '../../store/authSlice'
+
 import classes from './SignUp.module.scss'
 
 interface IFormInputs {
@@ -11,8 +14,18 @@ interface IFormInputs {
   repeatPassword: string
   checkbox: boolean
 }
-const onSubmit: SubmitHandler<IFormInputs> = (data) => console.log(data)
+
 const SignUp = () => {
+  const dispatch = useAppDispatch()
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    const { username, email, password } = data
+    const user = {
+      username,
+      email,
+      password,
+    }
+    dispatch(signUpUser({ user }))
+  }
   const {
     register,
     formState: { errors },
