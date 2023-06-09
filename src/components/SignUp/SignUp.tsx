@@ -16,7 +16,10 @@ interface IFormInputs {
 }
 
 const SignUp = () => {
-  const username = useAppSelector((state) => state.user.user.username)
+  const {
+    user: { username },
+    serverErrors,
+  } = useAppSelector((state) => state.user)
   useEffect(() => {
     reset()
   }, [username])
@@ -54,7 +57,9 @@ const SignUp = () => {
             type="text"
             placeholder={'Username'}
           />
-          {errors.username && <span className={classes['error-text']}>{errors.username.message}</span>}
+          {(errors.username || serverErrors) && (
+            <span className={classes['error-text']}>{errors.username?.message || serverErrors?.username}</span>
+          )}
         </label>
         <label htmlFor="email" className={classes.label}>
           <span>Email address</span>
@@ -71,7 +76,9 @@ const SignUp = () => {
             type="email"
             placeholder={'Email address'}
           />
-          {errors.email && <span className={classes['error-text']}>{errors.email.message}</span>}
+          {(errors.email || serverErrors) && (
+            <span className={classes['error-text']}>{errors.email?.message || serverErrors?.email}</span>
+          )}
         </label>
         <label htmlFor="password" className={classes.label}>
           <span>Password</span>
@@ -86,7 +93,9 @@ const SignUp = () => {
             type="password"
             placeholder={'Password'}
           />
-          {errors.password && <span className={classes['error-text']}>{errors.password.message}</span>}
+          {(errors.password || serverErrors) && (
+            <span className={classes['error-text']}>{errors.password?.message || serverErrors?.password}</span>
+          )}
         </label>
         <label htmlFor="repeat-password" className={classes.label}>
           <span>Repeat Password</span>
@@ -95,7 +104,7 @@ const SignUp = () => {
               required: { value: true, message: 'Confirm password' },
               validate: {
                 validate: (val: string) => {
-                  if (watch('password') != val) {
+                  if (watch('password') !== val) {
                     return 'Your passwords do no match'
                   }
                 },

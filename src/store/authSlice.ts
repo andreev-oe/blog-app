@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { IUser, IUserData } from '../types'
+import { IErrors, IUser, IUserData } from '../types'
 
 const baseUrl = 'https://blog.kata.academy/api/'
 const defaultState: IUser = {
@@ -13,7 +13,7 @@ const defaultState: IUser = {
   },
 }
 
-const signUpUser = createAsyncThunk<IUser, object, { rejectValue: boolean }>(
+const signUpUser = createAsyncThunk<IUser, object, { rejectValue: IErrors }>(
   'user/signUpUser',
   async function (user, { rejectWithValue }) {
     const response = await fetch(`${baseUrl}users`, {
@@ -24,12 +24,13 @@ const signUpUser = createAsyncThunk<IUser, object, { rejectValue: boolean }>(
       },
     })
     if (!response.ok) {
-      return rejectWithValue(true)
+      const errors = await response.json()
+      return rejectWithValue(errors)
     }
     return await response.json()
   }
 )
-const signInUser = createAsyncThunk<IUser, object, { rejectValue: boolean }>(
+const signInUser = createAsyncThunk<IUser, object, { rejectValue: IErrors }>(
   'user/signInUser',
   async function (user, { rejectWithValue }) {
     const response = await fetch(`${baseUrl}users/login`, {
@@ -40,12 +41,13 @@ const signInUser = createAsyncThunk<IUser, object, { rejectValue: boolean }>(
       },
     })
     if (!response.ok) {
-      return rejectWithValue(true)
+      const errors = await response.json()
+      return rejectWithValue(errors)
     }
     return await response.json()
   }
 )
-const updateUser = createAsyncThunk<IUser, IUserData, { rejectValue: boolean }>(
+const updateUser = createAsyncThunk<IUser, IUserData, { rejectValue: IErrors }>(
   'user/updateUser',
   async function (user, { rejectWithValue }) {
     const { token } = user
@@ -58,7 +60,8 @@ const updateUser = createAsyncThunk<IUser, IUserData, { rejectValue: boolean }>(
       },
     })
     if (!response.ok) {
-      return rejectWithValue(true)
+      const errors = await response.json()
+      return rejectWithValue(errors)
     }
     return await response.json()
   }
@@ -89,13 +92,15 @@ const authSlice = createSlice({
         state.user.token = action.payload.user.token
         state.user.bio = action.payload.user.bio
         state.user.image = action.payload.user.image
+        state.serverErrors = {}
         state.loading = false
         state.error = false
         localStorage.setItem('user', JSON.stringify(action.payload))
       })
-      .addCase(signUpUser.rejected, (state) => {
+      .addCase(signUpUser.rejected, (state, action) => {
         state.loading = false
         state.error = true
+        state.serverErrors = action.payload?.errors
       })
       .addCase(signInUser.pending, (state) => {
         state.loading = true
@@ -107,13 +112,15 @@ const authSlice = createSlice({
         state.user.token = action.payload.user.token
         state.user.bio = action.payload.user.bio
         state.user.image = action.payload.user.image
+        state.serverErrors = {}
         state.loading = false
         state.error = false
         localStorage.setItem('user', JSON.stringify(action.payload))
       })
-      .addCase(signInUser.rejected, (state) => {
+      .addCase(signInUser.rejected, (state, action) => {
         state.loading = false
         state.error = true
+        state.serverErrors = action.payload?.errors
       })
       .addCase(updateUser.pending, (state) => {
         state.loading = true
@@ -125,13 +132,15 @@ const authSlice = createSlice({
         state.user.token = action.payload.user.token
         state.user.bio = action.payload.user.bio
         state.user.image = action.payload.user.image
+        state.serverErrors = {}
         state.loading = false
         state.error = false
         localStorage.setItem('user', JSON.stringify(action.payload))
       })
-      .addCase(updateUser.rejected, (state) => {
+      .addCase(updateUser.rejected, (state, action) => {
         state.loading = false
         state.error = true
+        state.serverErrors = action.payload?.errors
       })
   },
 })

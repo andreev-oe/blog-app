@@ -33,8 +33,24 @@ export interface IUserData {
   bio?: string
   image?: string
 }
+export interface IErrors {
+  errors: {
+    email?: string
+    username?: string
+    password?: string
+    image?: string
+    bio?: string
+  }
+}
 export interface IUser {
   user: IUserData
   loading?: boolean
   error?: boolean
+  serverErrors?: {
+    email?: string
+    username?: string
+    password?: string
+    image?: string
+    bio?: string
+  }
 }

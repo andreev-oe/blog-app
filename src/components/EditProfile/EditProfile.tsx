@@ -17,7 +17,10 @@ interface IFormInputs {
 }
 const EditProfile = () => {
   const navigate = useNavigate()
-  const { username, token } = useAppSelector((state) => state.user.user)
+  const {
+    user: { username, token },
+    serverErrors,
+  } = useAppSelector((state) => state.user)
   useEffect(() => {
     reset()
   }, [username])
@@ -59,7 +62,9 @@ const EditProfile = () => {
             type="text"
             placeholder={'Username'}
           />
-          {errors.username && <span className={classes['error-text']}>{errors.username.message}</span>}
+          {(errors.username || serverErrors) && (
+            <span className={classes['error-text']}>{errors.username?.message || serverErrors?.username}</span>
+          )}
         </label>
         <label htmlFor="email" className={classes.label}>
           <span>Email address</span>
@@ -76,7 +81,9 @@ const EditProfile = () => {
             type="email"
             placeholder={'Email address'}
           />
-          {errors.email && <span className={classes['error-text']}>{errors.email.message}</span>}
+          {(errors.email || serverErrors) && (
+            <span className={classes['error-text']}>{errors.email?.message || serverErrors?.email}</span>
+          )}
         </label>
         <label htmlFor="password" className={classes.label}>
           <span>New password</span>
@@ -91,7 +98,9 @@ const EditProfile = () => {
             type="password"
             placeholder={'New password'}
           />
-          {errors.password && <span className={classes['error-text']}>{errors.password.message}</span>}
+          {(errors.password || serverErrors) && (
+            <span className={classes['error-text']}>{errors.password?.message || serverErrors?.password}</span>
+          )}
         </label>
         <label htmlFor="repeat-password" className={classes.label}>
           <span>Avatar image (url)</span>
