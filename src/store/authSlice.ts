@@ -5,11 +5,11 @@ import { IUser, IUserData } from '../types'
 const baseUrl = 'https://blog.kata.academy/api/'
 const defaultState: IUser = {
   user: {
-    username: JSON.parse(localStorage.getItem('user') || '')?.user.username,
-    email: JSON.parse(localStorage.getItem('user') || '')?.user.email,
-    token: JSON.parse(localStorage.getItem('user') || '')?.user.token,
-    bio: JSON.parse(localStorage.getItem('user') || '')?.user.bio,
-    image: JSON.parse(localStorage.getItem('user') || '')?.user.image,
+    username: JSON.parse(localStorage.getItem('user') || '""').user?.username,
+    email: JSON.parse(localStorage.getItem('user') || '""').user?.email,
+    token: JSON.parse(localStorage.getItem('user') || '""').user?.token,
+    bio: JSON.parse(localStorage.getItem('user') || '""').user?.bio,
+    image: JSON.parse(localStorage.getItem('user') || '""').user?.image,
   },
 }
 

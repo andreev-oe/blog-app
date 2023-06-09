@@ -6,13 +6,13 @@ import { useAppSelector } from '../../hooks'
 import classes from './UserInfo.module.scss'
 
 const UserInfo = () => {
-  const usernameFromState = useAppSelector((state) => state.user.user.username)
+  const { username, image } = useAppSelector((state) => state.user.user)
   const userInInLocalStorage = JSON.parse(localStorage.getItem('user') || '')
-  const username: string = usernameFromState && userInInLocalStorage.user.username
+  const shownUsername: string = username && userInInLocalStorage.user.username
   return (
     <div className={classes.wrapper}>
-      <span className={classes.name}>{username}</span>
-      <img src={avatar} alt="user avatar" className={classes.img} />
+      <span className={classes.name}>{shownUsername}</span>
+      <img src={image ? image : avatar} alt="user avatar" className={classes.img} />
     </div>
   )
 }

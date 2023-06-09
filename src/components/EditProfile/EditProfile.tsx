@@ -45,50 +45,70 @@ const EditProfile = () => {
   return (
     <section className={classes.section}>
       <h2 className={classes.title}>Edit Profile</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+      <form noValidate onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <label htmlFor="username" className={classes.label}>
           <span>Username</span>
           <input
-            {...register('username', { required: true })}
+            {...register('username', {
+              required: { value: true, message: 'Username is required' },
+              minLength: { value: 3, message: 'Username must be more than 2 symbols' },
+              maxLength: { value: 20, message: 'Username must be less than 21 symbols' },
+            })}
             className={errors.username ? `${classes.input} ${classes['input--error']}` : classes.input}
             id="username"
             type="text"
             placeholder={'Username'}
           />
-          {errors.username && <span className={classes['error-text']}>Username is required</span>}
+          {errors.username && <span className={classes['error-text']}>{errors.username.message}</span>}
         </label>
         <label htmlFor="email" className={classes.label}>
           <span>Email address</span>
           <input
-            {...register('email', { required: true })}
+            {...register('email', {
+              required: { value: true, message: 'Email address is required' },
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,
+                message: 'Must be valid email, for example john.doe@gmail.com',
+              },
+            })}
             className={errors.email ? `${classes.input} ${classes['input--error']}` : classes.input}
             id="email"
             type="email"
             placeholder={'Email address'}
           />
-          {errors.email && <span className={classes['error-text']}>Email is required</span>}
+          {errors.email && <span className={classes['error-text']}>{errors.email.message}</span>}
         </label>
         <label htmlFor="password" className={classes.label}>
           <span>New password</span>
           <input
-            {...register('password', { required: true })}
+            {...register('password', {
+              required: { value: true, message: 'Password is required' },
+              minLength: { value: 6, message: 'Password must be more than 5 symbols' },
+              maxLength: { value: 40, message: 'Password must be less than 41 symbols' },
+            })}
             className={errors.password ? `${classes.input} ${classes['input--error']}` : classes.input}
             id="password"
             type="password"
             placeholder={'New password'}
           />
-          {errors.password && <span className={classes['error-text']}>Password is required</span>}
+          {errors.password && <span className={classes['error-text']}>{errors.password.message}</span>}
         </label>
         <label htmlFor="repeat-password" className={classes.label}>
           <span>Avatar image (url)</span>
           <input
-            {...register('image', { required: true })}
+            {...register('image', {
+              required: { value: true, message: 'Email address is required' },
+              pattern: {
+                value: /[-a-zA-Z0-9@:%_\\+.~#?&\\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\\+.~#?&\\/=]*)?/gi,
+                message: 'Must be valid URL, for example https://bumper-stickers.ru/51861-thickbox_default/smayl.jpg',
+              },
+            })}
             className={errors.image ? `${classes.input} ${classes['input--error']}` : classes.input}
             id="repeat-password"
-            type="text"
+            type="url"
             placeholder={'Avatar image'}
           />
-          {errors.image && <span className={classes['error-text']}>Avatar is required</span>}
+          {errors.image && <span className={classes['error-text']}>{errors.image.message}</span>}
         </label>
         <button className={classes.button} type="submit">
           Save
