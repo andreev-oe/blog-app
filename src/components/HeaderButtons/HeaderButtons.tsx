@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import classes from '../HeaderButtons/HeaderButtom.module.scss'
 import UserInfo from '../UserInfo'
@@ -28,10 +28,12 @@ const userNotLoggedJSX = (
 )
 
 const HeaderButtons = () => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const logOutUser = authSlice.actions.logOutUser
   const clearLocalStorage = () => {
     dispatch(logOutUser())
+    navigate('/')
   }
   const user = useAppSelector((state) => state.user.user)
   const userInInLocalStorage = localStorage.getItem('user')
