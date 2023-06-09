@@ -5,9 +5,12 @@ import { IUser } from '../types'
 const baseUrl = 'https://blog.kata.academy/api/'
 const defaultState: IUser = {
   user: {
-    username: 'Олег',
-    email: '123@qwe.ru',
-    password: '123',
+    username: '',
+    email: '',
+    password: '',
+    token: '',
+    bio: '',
+    image: '',
   },
 }
 
@@ -31,7 +34,17 @@ const signUpUser = createAsyncThunk<IUser, object, { rejectValue: boolean }>(
 const authSlice = createSlice({
   name: 'user',
   initialState: defaultState,
-  reducers: {},
+  reducers: {
+    logOutUser(state) {
+      state.user.username = ''
+      state.user.email = ''
+      state.user.password = ''
+      state.user.token = ''
+      state.user.bio = ''
+      state.user.image = ''
+      localStorage.clear()
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signUpUser.pending, (state) => {

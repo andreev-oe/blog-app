@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom'
 
 import classes from '../HeaderButtons/HeaderButtom.module.scss'
 import UserInfo from '../UserInfo'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { authSlice } from '../../store/authSlice'
 
-const clearLocalStorage = () => {
-  localStorage.clear()
-}
 const userLoggedJSX = (
   <>
     <button className={`${classes['article-button']} ${classes.button}`}>Create article</button>
@@ -29,10 +28,16 @@ const userNotLoggedJSX = (
 )
 
 const HeaderButtons = () => {
+  const dispatch = useAppDispatch()
+  const logOutUser = authSlice.actions.logOutUser
+  const clearLocalStorage = () => {
+    dispatch(logOutUser())
+  }
+  const user = useAppSelector((state) => state.user.user)
   const userInInLocalStorage = localStorage.getItem('user')
   return (
     <div className={classes['authorize-buttons']}>
-      {userInInLocalStorage ? userLoggedJSX : userNotLoggedJSX}
+      {userInInLocalStorage || user.username ? userLoggedJSX : userNotLoggedJSX}
       <button onClick={clearLocalStorage} className={`${classes['log-out']} ${classes.button}`}>
         Log Out
       </button>
