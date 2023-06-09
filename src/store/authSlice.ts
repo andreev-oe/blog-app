@@ -30,6 +30,22 @@ const signUpUser = createAsyncThunk<IUser, object, { rejectValue: boolean }>(
     return await response.json()
   }
 )
+const signInUser = createAsyncThunk<IUser, object, { rejectValue: boolean }>(
+  'user/signInUser',
+  async function (user, { rejectWithValue }) {
+    const response = await fetch(`${baseUrl}users/login`, {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+    if (!response.ok) {
+      return rejectWithValue(true)
+    }
+    return await response.json()
+  }
+)
 
 const authSlice = createSlice({
   name: 'user',
@@ -55,6 +71,8 @@ const authSlice = createSlice({
         state.user.username = action.payload.user.username
         state.user.email = action.payload.user.email
         state.user.token = action.payload.user.token
+        state.user.bio = action.payload.user.bio
+        state.user.image = action.payload.user.image
         state.loading = false
         state.error = false
         localStorage.setItem('user', JSON.stringify(action.payload))
@@ -63,8 +81,26 @@ const authSlice = createSlice({
         state.loading = false
         state.error = true
       })
+      .addCase(signInUser.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(signInUser.fulfilled, (state, action: PayloadAction<IUser>) => {
+        state.user.username = action.payload.user.username
+        state.user.email = action.payload.user.email
+        state.user.token = action.payload.user.token
+        state.user.bio = action.payload.user.bio
+        state.user.image = action.payload.user.image
+        state.loading = false
+        state.error = false
+        localStorage.setItem('user', JSON.stringify(action.payload))
+      })
+      .addCase(signInUser.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
   },
 })
 
 export default authSlice.reducer
-export { authSlice, signUpUser }
+export { authSlice, signUpUser, signInUser }

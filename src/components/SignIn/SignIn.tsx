@@ -2,14 +2,25 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import { useAppDispatch } from '../../hooks'
+import { signInUser } from '../../store/authSlice'
+
 import classes from './SignIn.module.scss'
 
 interface IFormInputs {
   email: string
   password: string
 }
-const onSubmit: SubmitHandler<IFormInputs> = (data) => console.log(data)
 const SignIn = () => {
+  const dispatch = useAppDispatch()
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    const { email, password } = data
+    const user = {
+      email,
+      password,
+    }
+    dispatch(signInUser({ user }))
+  }
   const {
     register,
     formState: { errors },
