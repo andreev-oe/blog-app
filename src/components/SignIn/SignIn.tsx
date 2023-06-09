@@ -1,8 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, Navigate } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { useAppDispatch } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks'
 import { signInUser } from '../../store/authSlice'
 
 import classes from './SignIn.module.scss'
@@ -12,6 +12,10 @@ interface IFormInputs {
   password: string
 }
 const SignIn = () => {
+  const username = useAppSelector((state) => state.user.user.username)
+  useEffect(() => {
+    reset()
+  }, [username])
   const dispatch = useAppDispatch()
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     const { email, password } = data
@@ -23,11 +27,13 @@ const SignIn = () => {
   }
   const {
     register,
+    reset,
     formState: { errors },
     handleSubmit,
   } = useForm<IFormInputs>()
-  return (
+  const signInPage = (
     <section className={classes.section}>
+      {username ? <Navigate to={'/'} /> : ''}
       <h2 className={classes.title}>Sign In</h2>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <label htmlFor="email" className={classes.label}>
@@ -64,6 +70,7 @@ const SignIn = () => {
       </p>
     </section>
   )
+  return username ? <Navigate to={'/'} /> : signInPage
 }
 
 export default SignIn

@@ -1,8 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, Navigate } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { useAppDispatch } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks'
 import { signUpUser } from '../../store/authSlice'
 
 import classes from './SignUp.module.scss'
@@ -16,6 +16,10 @@ interface IFormInputs {
 }
 
 const SignUp = () => {
+  const username = useAppSelector((state) => state.user.user.username)
+  useEffect(() => {
+    reset()
+  }, [username])
   const dispatch = useAppDispatch()
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     const { username, email, password } = data
@@ -28,10 +32,11 @@ const SignUp = () => {
   }
   const {
     register,
+    reset,
     formState: { errors },
     handleSubmit,
   } = useForm<IFormInputs>()
-  return (
+  const signUpPage = (
     <section className={classes.section}>
       <h2 className={classes.title}>Create new account</h2>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
@@ -101,6 +106,7 @@ const SignUp = () => {
       </p>
     </section>
   )
+  return username ? <Navigate to={'/'} /> : signUpPage
 }
 
 export default SignUp
