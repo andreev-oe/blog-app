@@ -6,7 +6,7 @@ import ArticlesList from '../ArticlesList'
 import Article from '../Article'
 import SignUp from '../SignUp'
 import SignIn from '../SignIn'
-import Profile from '../Profile'
+import EditProfile from '../EditProfile'
 
 import classes from './App.module.scss'
 
@@ -21,7 +21,7 @@ function App() {
             <Route path={'articles/:slug'} element={<Article />} />
             <Route path={'sign-up'} element={<SignUp />} />
             <Route path={'sign-in'} element={<SignIn />} />
-            <Route path={'profile'} element={<Profile />} />
+            <Route path={'profile'} element={<EditProfile />} />
           </Route>
         </Routes>
       </BrowserRouter>

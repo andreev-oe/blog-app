@@ -1,18 +1,44 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
-import classes from './Profile.module.scss'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { updateUser } from '../../store/authSlice'
+import { IUserData } from '../../types'
+
+import classes from './EditProfile.module.scss'
 
 interface IFormInputs {
   email: string
   username: string
   password: string
-  avatar: string
+  image: string
+  token: string
 }
-const onSubmit: SubmitHandler<IFormInputs> = (data) => console.log(data)
-const Profile = () => {
+const EditProfile = () => {
+  const navigate = useNavigate()
+  const { username, token } = useAppSelector((state) => state.user.user)
+  useEffect(() => {
+    reset()
+  }, [username])
+  const dispatch = useAppDispatch()
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    const { username, email, password, image } = data
+    const user: IUserData = {
+      username,
+      email,
+      password,
+      image,
+      token,
+    }
+    dispatch(updateUser(user))
+    if (!Object.entries(errors).length) {
+      navigate('/')
+    }
+  }
   const {
     register,
+    reset,
     formState: { errors },
     handleSubmit,
   } = useForm<IFormInputs>()
@@ -56,13 +82,13 @@ const Profile = () => {
         <label htmlFor="repeat-password" className={classes.label}>
           <span>Avatar image (url)</span>
           <input
-            {...register('avatar', { required: true })}
-            className={errors.avatar ? `${classes.input} ${classes['input--error']}` : classes.input}
+            {...register('image', { required: true })}
+            className={errors.image ? `${classes.input} ${classes['input--error']}` : classes.input}
             id="repeat-password"
             type="text"
             placeholder={'Avatar image'}
           />
-          {errors.avatar && <span className={classes['error-text']}>Avatar is required</span>}
+          {errors.image && <span className={classes['error-text']}>Avatar is required</span>}
         </label>
         <button className={classes.button} type="submit">
           Save
@@ -72,4 +98,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default EditProfile

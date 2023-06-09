@@ -6,14 +6,9 @@ import { useAppSelector } from '../../hooks'
 import classes from './UserInfo.module.scss'
 
 const UserInfo = () => {
-  // TODO hook in conditional statement?
-  let username: string
-  const userInInLocalStorage = localStorage.getItem('user')
-  if (userInInLocalStorage) {
-    username = JSON.parse(userInInLocalStorage).user.username
-  } else {
-    username = useAppSelector((state) => state.user.user.username)
-  }
+  const usernameFromState = useAppSelector((state) => state.user.user.username)
+  const userInInLocalStorage = JSON.parse(localStorage.getItem('user') || '')
+  const username: string = usernameFromState && userInInLocalStorage.user.username
   return (
     <div className={classes.wrapper}>
       <span className={classes.name}>{username}</span>

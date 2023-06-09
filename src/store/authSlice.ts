@@ -1,16 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { IUser } from '../types'
+import { IUser, IUserData } from '../types'
 
 const baseUrl = 'https://blog.kata.academy/api/'
 const defaultState: IUser = {
   user: {
-    username: '',
-    email: '',
-    password: '',
-    token: '',
-    bio: '',
-    image: '',
+    username: JSON.parse(localStorage.getItem('user') || '')?.user.username,
+    email: JSON.parse(localStorage.getItem('user') || '')?.user.email,
+    token: JSON.parse(localStorage.getItem('user') || '')?.user.token,
+    bio: JSON.parse(localStorage.getItem('user') || '')?.user.bio,
+    image: JSON.parse(localStorage.getItem('user') || '')?.user.image,
   },
 }
 
@@ -46,6 +45,24 @@ const signInUser = createAsyncThunk<IUser, object, { rejectValue: boolean }>(
     return await response.json()
   }
 )
+const updateUser = createAsyncThunk<IUser, IUserData, { rejectValue: boolean }>(
+  'user/updateUser',
+  async function (user, { rejectWithValue }) {
+    const { token } = user
+    const response = await fetch(`${baseUrl}user`, {
+      method: 'PUT',
+      body: JSON.stringify({ user }),
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (!response.ok) {
+      return rejectWithValue(true)
+    }
+    return await response.json()
+  }
+)
 
 const authSlice = createSlice({
   name: 'user',
@@ -54,11 +71,10 @@ const authSlice = createSlice({
     logOutUser(state) {
       state.user.username = ''
       state.user.email = ''
-      state.user.password = ''
       state.user.token = ''
       state.user.bio = ''
       state.user.image = ''
-      localStorage.clear()
+      localStorage.removeItem('user')
     },
   },
   extraReducers: (builder) => {
@@ -99,8 +115,26 @@ const authSlice = createSlice({
         state.loading = false
         state.error = true
       })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true
+        state.error = false
+      })
+      .addCase(updateUser.fulfilled, (state, action: PayloadAction<IUser>) => {
+        state.user.username = action.payload.user.username
+        state.user.email = action.payload.user.email
+        state.user.token = action.payload.user.token
+        state.user.bio = action.payload.user.bio
+        state.user.image = action.payload.user.image
+        state.loading = false
+        state.error = false
+        localStorage.setItem('user', JSON.stringify(action.payload))
+      })
+      .addCase(updateUser.rejected, (state) => {
+        state.loading = false
+        state.error = true
+      })
   },
 })
 
 export default authSlice.reducer
-export { authSlice, signUpUser, signInUser }
+export { authSlice, signUpUser, signInUser, updateUser }
