@@ -7,6 +7,7 @@ import Article from '../Article'
 import SignUp from '../SignUp'
 import SignIn from '../SignIn'
 import EditProfile from '../EditProfile'
+import ArticleForm from '../ArticleForm'
 
 import classes from './App.module.scss'
 
@@ -22,6 +23,7 @@ function App() {
             <Route path={'sign-up'} element={<SignUp />} />
             <Route path={'sign-in'} element={<SignIn />} />
             <Route path={'profile'} element={<EditProfile />} />
+            <Route path={'new-article'} element={<ArticleForm />} />
           </Route>
         </Routes>
       </BrowserRouter>

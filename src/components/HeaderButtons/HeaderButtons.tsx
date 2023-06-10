@@ -8,7 +8,9 @@ import { authSlice } from '../../store/authSlice'
 
 const userLoggedJSX = (
   <>
-    <button className={`${classes['article-button']} ${classes.button}`}>Create article</button>
+    <Link to={'/new-article'}>
+      <button className={`${classes['article-button']} ${classes.button}`}>Create article</button>
+    </Link>
     <Link to={'/profile'}>
       <button className={`${classes.profile} ${classes.button}`}>
         <UserInfo />
