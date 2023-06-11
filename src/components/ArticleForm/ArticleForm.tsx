@@ -1,5 +1,6 @@
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 import classes from '../ArticleForm/ArticleFrom.module.scss'
 import { useAppDispatch, useAppSelector } from '../../hooks'
@@ -15,6 +16,7 @@ interface IFormInputs {
 
 const ArticleForm = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { token } = useAppSelector((state) => state.user.user)
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     const { title, description, body, tag } = data
@@ -28,6 +30,7 @@ const ArticleForm = () => {
       },
     }
     dispatch(postArticle(article))
+    navigate('/')
   }
   const {
     register,

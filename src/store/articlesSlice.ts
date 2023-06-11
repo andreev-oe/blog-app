@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { IErrors, IState, IPostArticle } from '../types'
+import { IErrors, IState, IPostArticle, IDeleteArticle } from '../types'
 
 const baseUrl = 'https://blog.kata.academy/api/'
 const defaultState: IState = {
@@ -41,6 +41,28 @@ const postArticle = createAsyncThunk<IPostArticle, IPostArticle, { rejectValue: 
     const response = await fetch(`${baseUrl}articles`, {
       method: 'POST',
       body: JSON.stringify(article),
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (!response.ok) {
+      const errors = await response.json()
+      return rejectWithValue(errors)
+    }
+    return await response.json()
+  }
+)
+const deleteArticle = createAsyncThunk<IDeleteArticle, IDeleteArticle, { rejectValue: IErrors }>(
+  'articles/deleteArticle',
+  async function (data, { rejectWithValue }) {
+    const {
+      token,
+      slug: { slug },
+    } = data
+    const response = await fetch(`${baseUrl}articles/${slug}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ slug: slug }),
       headers: {
         'Content-type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -97,4 +119,4 @@ const articlesSlice = createSlice({
 })
 
 export default articlesSlice.reducer
-export { articlesSlice, getArticles, getArticle, postArticle }
+export { articlesSlice, getArticles, getArticle, postArticle, deleteArticle }

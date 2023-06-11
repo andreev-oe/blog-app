@@ -63,3 +63,9 @@ export interface IPostArticle {
     tagList: string[]
   }
 }
+export interface IDeleteArticle {
+  token: string
+  slug: {
+    slug: string
+  }
+}

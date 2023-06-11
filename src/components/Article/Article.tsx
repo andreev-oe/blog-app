@@ -1,9 +1,9 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect } from 'react'
 import { Alert, Spin } from 'antd'
 import Markdown from 'markdown-to-jsx'
 
-import { getArticle } from '../../store/articlesSlice'
+import { getArticle, deleteArticle } from '../../store/articlesSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import classes from '../Article/Article.module.scss'
 import like from '../../assets/like.png'
@@ -14,21 +14,37 @@ const ERROR_MESSAGE = 'Sorry, content not loaded, check your internet connection
 const Article = () => {
   // TODO sometimes get TypeError: Cannot read properties of undefined (reading 'replace'). Maybe should try to reset url or check if slug already in state
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { slug } = useParams()
   useEffect(() => {
     if (slug) {
       dispatch(getArticle(slug))
     }
   }, [slug])
-  const { article, error, loading } = useAppSelector((state) => state.articles)
-  const { username: stateUsername } = useAppSelector((state) => state.user.user)
+  const { article, error, loading, activeArticleSlug } = useAppSelector((state) => state.articles)
+  const { username: stateUsername, token } = useAppSelector((state) => state.user.user)
   const articleAuthor = useAppSelector((state) => state.articles.article?.author.username)
+  const onDelete = () => {
+    if (slug && token) {
+      const data = {
+        token,
+        slug: {
+          slug,
+        },
+      }
+      dispatch(deleteArticle(data))
+      navigate('/')
+    }
+  }
+  const onEdit = () => {
+    console.log(activeArticleSlug)
+  }
   const actions = (
     <div className={classes.actions}>
-      <button className={`${classes.action} ${classes['action--delete']}`} type="button">
+      <button onClick={onDelete} className={`${classes.action} ${classes['action--delete']}`} type="button">
         Delete
       </button>
-      <button className={`${classes.action} ${classes['action--edit']}`} type="button">
+      <button onClick={onEdit} className={`${classes.action} ${classes['action--edit']}`} type="button">
         Edit
       </button>
     </div>
