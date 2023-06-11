@@ -5,6 +5,7 @@ export interface IAuthor {
   following: boolean
 }
 export interface IArticle {
+  edit: boolean
   slug: string
   title: string
   description: string
@@ -13,12 +14,12 @@ export interface IArticle {
   createdAt: string
   updatedAt: string
   favorited: boolean
-  favoritesCount: boolean
+  favoritesCount: number
   author: IAuthor
 }
 export interface IState {
   articles: IArticle[]
-  article?: IArticle
+  article: IArticle
   loading?: boolean
   error?: boolean
   articlesCount: number
@@ -59,6 +60,16 @@ export interface IPostArticle {
     token?: string
     title: string
     description: string
+    body: string
+    tagList: string[]
+  }
+}
+export interface IUpdatedArticle {
+  token?: string
+  slug?: string
+  updatedArticle: {
+    title: string
+    description?: string
     body: string
     tagList: string[]
   }

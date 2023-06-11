@@ -1,11 +1,11 @@
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import classes from '../ArticleForm/ArticleFrom.module.scss'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { postArticle } from '../../store/articlesSlice'
-import { IPostArticle } from '../../types'
+import { articlesSlice, updateArticle, postArticle } from '../../store/articlesSlice'
+import { IPostArticle, IUpdatedArticle } from '../../types'
 
 interface IFormInputs {
   title: string
@@ -16,10 +16,23 @@ interface IFormInputs {
 
 const ArticleForm = () => {
   const dispatch = useAppDispatch()
+  const setEdit = articlesSlice.actions.setEdit
+  const { slug } = useParams()
   const navigate = useNavigate()
   const { token } = useAppSelector((state) => state.user.user)
+  const { title, description, body, tagList, edit } = useAppSelector((state) => state.articles.article)
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     const { title, description, body, tag } = data
+    const updatedArticle: IUpdatedArticle = {
+      token,
+      slug,
+      updatedArticle: {
+        title,
+        description,
+        body,
+        tagList: [tag],
+      },
+    }
     const article: IPostArticle = {
       article: {
         title,
@@ -29,7 +42,12 @@ const ArticleForm = () => {
         token,
       },
     }
-    dispatch(postArticle(article))
+    if (edit) {
+      dispatch(updateArticle(updatedArticle))
+      dispatch(setEdit(false))
+    } else {
+      dispatch(postArticle(article))
+    }
     navigate('/')
   }
   const {
@@ -51,6 +69,7 @@ const ArticleForm = () => {
             id="title"
             type="text"
             placeholder={'Title'}
+            defaultValue={edit ? title : ''}
           />
           {errors.title && <span className={classes['error-text']}>{errors.title.message}</span>}
         </label>
@@ -64,6 +83,7 @@ const ArticleForm = () => {
             id="description"
             type="text"
             placeholder={'Title'}
+            defaultValue={edit ? description : ''}
           />
           {errors.description && <span className={classes['error-text']}>{errors.description.message}</span>}
         </label>
@@ -77,6 +97,7 @@ const ArticleForm = () => {
             id="text"
             rows={10}
             placeholder={'Text'}
+            defaultValue={edit ? body : ''}
           />
           {errors.body && <span className={classes['error-text']}>{errors.body.message}</span>}
         </label>
@@ -89,6 +110,7 @@ const ArticleForm = () => {
               id="tag"
               type="text"
               placeholder={'Tag'}
+              defaultValue={edit ? tagList : ''}
             />
           </label>
           <button className={`${classes.action} ${classes['action--delete']}`} type="button">

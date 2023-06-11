@@ -24,6 +24,7 @@ function App() {
             <Route path={'sign-in'} element={<SignIn />} />
             <Route path={'profile'} element={<EditProfile />} />
             <Route path={'new-article'} element={<ArticleForm />} />
+            <Route path={'articles/:slug/edit'} element={<ArticleForm />} />
           </Route>
         </Routes>
       </BrowserRouter>

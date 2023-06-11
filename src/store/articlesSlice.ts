@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { IErrors, IState, IPostArticle, IDeleteArticle } from '../types'
+import { IErrors, IState, IPostArticle, IDeleteArticle, IUpdatedArticle } from '../types'
 
 const baseUrl = 'https://blog.kata.academy/api/'
 const defaultState: IState = {
@@ -10,6 +10,24 @@ const defaultState: IState = {
   articlesCount: 0,
   activePage: 1,
   activeArticleSlug: '',
+  article: {
+    slug: '',
+    edit: false,
+    title: '',
+    description: '',
+    body: '',
+    tagList: [],
+    createdAt: '',
+    updatedAt: '',
+    favorited: false,
+    favoritesCount: 0,
+    author: {
+      username: '',
+      bio: '',
+      image: '',
+      following: false,
+    },
+  },
 }
 const ARTICLES_PER_PAGE = 5
 
@@ -41,6 +59,25 @@ const postArticle = createAsyncThunk<IPostArticle, IPostArticle, { rejectValue: 
     const response = await fetch(`${baseUrl}articles`, {
       method: 'POST',
       body: JSON.stringify(article),
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (!response.ok) {
+      const errors = await response.json()
+      return rejectWithValue(errors)
+    }
+    return await response.json()
+  }
+)
+const updateArticle = createAsyncThunk<IUpdatedArticle, IUpdatedArticle, { rejectValue: IErrors }>(
+  'articles/postArticle',
+  async function (article, { rejectWithValue }) {
+    const { token, slug, updatedArticle } = article
+    const response = await fetch(`${baseUrl}articles/${slug}`, {
+      method: 'PUT',
+      body: JSON.stringify({ article: updatedArticle }),
       headers: {
         'Content-type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -85,6 +122,9 @@ const articlesSlice = createSlice({
     setActiveArticleSlug(state, action: PayloadAction<string>) {
       state.activeArticleSlug = action.payload
     },
+    setEdit(state, action: PayloadAction<boolean>) {
+      state.article.edit = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -119,4 +159,4 @@ const articlesSlice = createSlice({
 })
 
 export default articlesSlice.reducer
-export { articlesSlice, getArticles, getArticle, postArticle, deleteArticle }
+export { articlesSlice, getArticles, getArticle, postArticle, deleteArticle, updateArticle }

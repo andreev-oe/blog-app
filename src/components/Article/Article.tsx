@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { Alert, Spin } from 'antd'
 import Markdown from 'markdown-to-jsx'
 
-import { getArticle, deleteArticle } from '../../store/articlesSlice'
+import { articlesSlice, getArticle, deleteArticle } from '../../store/articlesSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import classes from '../Article/Article.module.scss'
 import like from '../../assets/like.png'
@@ -14,6 +14,7 @@ const ERROR_MESSAGE = 'Sorry, content not loaded, check your internet connection
 const Article = () => {
   // TODO sometimes get TypeError: Cannot read properties of undefined (reading 'replace'). Maybe should try to reset url or check if slug already in state
   const dispatch = useAppDispatch()
+  const setEdit = articlesSlice.actions.setEdit
   const navigate = useNavigate()
   const { slug } = useParams()
   useEffect(() => {
@@ -21,7 +22,7 @@ const Article = () => {
       dispatch(getArticle(slug))
     }
   }, [slug])
-  const { article, error, loading, activeArticleSlug } = useAppSelector((state) => state.articles)
+  const { article, error, loading } = useAppSelector((state) => state.articles)
   const { username: stateUsername, token } = useAppSelector((state) => state.user.user)
   const articleAuthor = useAppSelector((state) => state.articles.article?.author.username)
   const onDelete = () => {
@@ -37,7 +38,8 @@ const Article = () => {
     }
   }
   const onEdit = () => {
-    console.log(activeArticleSlug)
+    dispatch(setEdit(true))
+    navigate(`/articles/${slug}/edit`)
   }
   const actions = (
     <div className={classes.actions}>

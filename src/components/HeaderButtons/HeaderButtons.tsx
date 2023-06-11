@@ -5,31 +5,34 @@ import classes from '../HeaderButtons/HeaderButtom.module.scss'
 import UserInfo from '../UserInfo'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { authSlice } from '../../store/authSlice'
-
-const userLoggedJSX = (
-  <>
-    <Link to={'/new-article'}>
-      <button className={`${classes['article-button']} ${classes.button}`}>Create article</button>
-    </Link>
-    <Link to={'/profile'}>
-      <button className={`${classes.profile} ${classes.button}`}>
-        <UserInfo />
-      </button>
-    </Link>
-  </>
-)
-const userNotLoggedJSX = (
-  <>
-    <Link to={'/sign-in'}>
-      <button className={`${classes['sign-in']} ${classes.button}`}>Sign In</button>
-    </Link>
-    <Link to={'/sign-up'}>
-      <button className={`${classes['sign-up']} ${classes.button}`}>Sign Up</button>
-    </Link>
-  </>
-)
+import { articlesSlice } from '../../store/articlesSlice'
 
 const HeaderButtons = () => {
+  const setEdit = articlesSlice.actions.setEdit
+  const userLoggedJSX = (
+    <>
+      <Link to={'/new-article'}>
+        <button onClick={() => dispatch(setEdit(false))} className={`${classes['article-button']} ${classes.button}`}>
+          Create article
+        </button>
+      </Link>
+      <Link to={'/profile'}>
+        <button className={`${classes.profile} ${classes.button}`}>
+          <UserInfo />
+        </button>
+      </Link>
+    </>
+  )
+  const userNotLoggedJSX = (
+    <>
+      <Link to={'/sign-in'}>
+        <button className={`${classes['sign-in']} ${classes.button}`}>Sign In</button>
+      </Link>
+      <Link to={'/sign-up'}>
+        <button className={`${classes['sign-up']} ${classes.button}`}>Sign Up</button>
+      </Link>
+    </>
+  )
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const logOutUser = authSlice.actions.logOutUser
