@@ -15,7 +15,7 @@ const ArticlesList = () => {
   const { activePage, articlesCount } = useAppSelector((state) => state.articles)
   const { setActivePage } = articlesSlice.actions
   useEffect(() => {
-    dispatch(getArticles(activePage * ARTICLES_PER_PAGE))
+    dispatch(getArticles(activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : 0))
   }, [dispatch, activePage])
   const { articles, error, loading } = useAppSelector((state) => state.articles)
   const showArticles =

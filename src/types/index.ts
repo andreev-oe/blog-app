@@ -29,7 +29,7 @@ export interface IUserData {
   username: string
   email: string
   password?: string
-  token: string | null
+  token: string | undefined
   bio?: string
   image?: string
 }
@@ -52,5 +52,14 @@ export interface IUser {
     password?: string
     image?: string
     bio?: string
+  }
+}
+export interface IPostArticle {
+  article: {
+    token?: string
+    title: string
+    description: string
+    body: string
+    tagList: string[]
   }
 }

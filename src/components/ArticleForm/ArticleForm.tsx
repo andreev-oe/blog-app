@@ -2,27 +2,32 @@ import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import classes from '../ArticleForm/ArticleFrom.module.scss'
-import { useAppDispatch } from '../../hooks'
-import { signInUser } from '../../store/authSlice'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { postArticle } from '../../store/articlesSlice'
+import { IPostArticle } from '../../types'
 
 interface IFormInputs {
   title: string
   description: string
-  text: string
+  body: string
   tag: string
 }
 
 const ArticleForm = () => {
   const dispatch = useAppDispatch()
+  const { token } = useAppSelector((state) => state.user.user)
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    const { title, description, text, tag } = data
-    const article = {
-      title,
-      description,
-      text,
-      tag,
+    const { title, description, body, tag } = data
+    const article: IPostArticle = {
+      article: {
+        title,
+        description,
+        body,
+        tagList: [tag],
+        token,
+      },
     }
-    dispatch(signInUser({ article }))
+    dispatch(postArticle(article))
   }
   const {
     register,
@@ -62,15 +67,15 @@ const ArticleForm = () => {
         <label htmlFor="text" className={classes.label}>
           <span>Text</span>
           <textarea
-            {...register('text', {
+            {...register('body', {
               required: { value: true, message: 'Text is required' },
             })}
-            className={errors.text ? `${classes.textarea} ${classes['textarea--error']}` : classes.textarea}
+            className={errors.body ? `${classes.textarea} ${classes['textarea--error']}` : classes.textarea}
             id="text"
             rows={10}
             placeholder={'Text'}
           />
-          {errors.text && <span className={classes['error-text']}>{errors.text.message}</span>}
+          {errors.body && <span className={classes['error-text']}>{errors.body.message}</span>}
         </label>
         <div className={classes['tags-wrapper']}>
           <label htmlFor="tag" className={`${classes.label} ${classes.tags}`}>
