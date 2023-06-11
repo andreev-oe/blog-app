@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect } from 'react'
-import { Alert, Spin } from 'antd'
+import { Alert, Spin, Button, message, Popconfirm } from 'antd'
 import Markdown from 'markdown-to-jsx'
 
 import { articlesSlice, getArticle, deleteArticle } from '../../store/articlesSlice'
@@ -10,7 +10,6 @@ import like from '../../assets/like.png'
 import authorDummy from '../../assets/author-dummy.png'
 
 const ERROR_MESSAGE = 'Sorry, content not loaded, check your internet connection and try to update page'
-
 const Article = () => {
   // TODO sometimes get TypeError: Cannot read properties of undefined (reading 'replace'). Maybe should try to reset url or check if slug already in state
   const dispatch = useAppDispatch()
@@ -41,11 +40,24 @@ const Article = () => {
     dispatch(setEdit(true))
     navigate(`/articles/${slug}/edit`)
   }
+  const confirm = () => {
+    onDelete()
+    message.success('Article deleted')
+  }
   const actions = (
     <div className={classes.actions}>
-      <button onClick={onDelete} className={`${classes.action} ${classes['action--delete']}`} type="button">
-        Delete
-      </button>
+      <Popconfirm
+        title="Delete the article"
+        description="Are you sure to delete this article?"
+        onConfirm={confirm}
+        okText="Yes"
+        cancelText="No"
+        placement="bottom"
+      >
+        <Button className={`${classes.action} ${classes['action--delete']}`} danger>
+          Delete
+        </Button>
+      </Popconfirm>
       <button onClick={onEdit} className={`${classes.action} ${classes['action--edit']}`} type="button">
         Edit
       </button>
