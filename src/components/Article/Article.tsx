@@ -21,6 +21,18 @@ const Article = () => {
     }
   }, [slug])
   const { article, error, loading } = useAppSelector((state) => state.articles)
+  const { username: stateUsername } = useAppSelector((state) => state.user.user)
+  const articleAuthor = useAppSelector((state) => state.articles.article?.author.username)
+  const actions = (
+    <div className={classes.actions}>
+      <button className={`${classes.action} ${classes['action--delete']}`} type="button">
+        Delete
+      </button>
+      <button className={`${classes.action} ${classes['action--edit']}`} type="button">
+        Edit
+      </button>
+    </div>
+  )
   let showArticle = null
   if (article) {
     const { title, favoritesCount, tagList, description, createdAt, author } = article
@@ -55,14 +67,7 @@ const Article = () => {
                 </div>
                 <img className={classes['author-photo']} src={image ? image : authorDummy} alt={'author-photo'} />
               </div>
-              <div className={classes.actions}>
-                <button className={`${classes.action} ${classes['action--delete']}`} type="button">
-                  Delete
-                </button>
-                <button className={`${classes.action} ${classes['action--edit']}`} type="button">
-                  Edit
-                </button>
-              </div>
+              {stateUsername === articleAuthor ? actions : null}
             </div>
           </article>
         </>
