@@ -47,12 +47,22 @@ const Article = () => {
               <p className={classes.text}>{description}</p>
               <Markdown>{article ? article.body : ''}</Markdown>
             </div>
-            <div className={classes['article-author']}>
-              <div className={classes['author-wrapper']}>
-                <p className={classes['author-name']}>{username}</p>
-                <p className={classes.date}>{createdAt}</p>
+            <div className={classes['author-wrapper']}>
+              <div className={classes['article-author']}>
+                <div>
+                  <p className={classes['author-name']}>{username}</p>
+                  <p className={classes.date}>{createdAt}</p>
+                </div>
+                <img className={classes['author-photo']} src={image ? image : authorDummy} alt={'author-photo'} />
               </div>
-              <img className={classes['author-photo']} src={image ? image : authorDummy} alt={'author-photo'} />
+              <div className={classes.actions}>
+                <button className={`${classes.action} ${classes['action--delete']}`} type="button">
+                  Delete
+                </button>
+                <button className={`${classes.action} ${classes['action--edit']}`} type="button">
+                  Edit
+                </button>
+              </div>
             </div>
           </article>
         </>
