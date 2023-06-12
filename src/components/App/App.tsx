@@ -8,6 +8,7 @@ import SignUp from '../SignUp'
 import SignIn from '../SignIn'
 import EditProfile from '../EditProfile'
 import ArticleForm from '../ArticleForm'
+import PrivateRoute from '../PrivateRoute/PrivateRoute'
 
 import classes from './App.module.scss'
 
@@ -23,7 +24,14 @@ function App() {
             <Route path={'sign-up'} element={<SignUp />} />
             <Route path={'sign-in'} element={<SignIn />} />
             <Route path={'profile'} element={<EditProfile />} />
-            <Route path={'new-article'} element={<ArticleForm />} />
+            <Route
+              path={'new-article'}
+              element={
+                <PrivateRoute>
+                  <ArticleForm />
+                </PrivateRoute>
+              }
+            />
             <Route path={'articles/:slug/edit'} element={<ArticleForm />} />
           </Route>
         </Routes>

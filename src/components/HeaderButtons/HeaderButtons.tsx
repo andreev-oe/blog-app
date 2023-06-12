@@ -9,6 +9,15 @@ import { articlesSlice } from '../../store/articlesSlice'
 
 const HeaderButtons = () => {
   const setEdit = articlesSlice.actions.setEdit
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const logOutUser = authSlice.actions.logOutUser
+  const logOut = () => {
+    dispatch(logOutUser())
+    navigate('/')
+  }
+  const user = useAppSelector((state) => state.user.user)
+  const userInInLocalStorage = JSON.parse(localStorage.getItem('user') || '""')
   const userLoggedJSX = (
     <>
       <Link to={'/new-article'}>
@@ -21,6 +30,9 @@ const HeaderButtons = () => {
           <UserInfo />
         </button>
       </Link>
+      <button onClick={logOut} className={`${classes['log-out']} ${classes.button}`}>
+        Log Out
+      </button>
     </>
   )
   const userNotLoggedJSX = (
@@ -33,21 +45,9 @@ const HeaderButtons = () => {
       </Link>
     </>
   )
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const logOutUser = authSlice.actions.logOutUser
-  const clearLocalStorage = () => {
-    dispatch(logOutUser())
-    navigate('/')
-  }
-  const user = useAppSelector((state) => state.user.user)
-  const userInInLocalStorage = localStorage.getItem('user')
   return (
     <div className={classes['authorize-buttons']}>
-      {userInInLocalStorage || user.username ? userLoggedJSX : userNotLoggedJSX}
-      <button onClick={clearLocalStorage} className={`${classes['log-out']} ${classes.button}`}>
-        Log Out
-      </button>
+      {userInInLocalStorage.username || user.username ? userLoggedJSX : userNotLoggedJSX}
     </div>
   )
 }
