@@ -179,6 +179,11 @@ const articlesSlice = createSlice({
         state.error = true
       })
       .addCase(favoriteArticle.fulfilled, (state, action) => {
+        state.articles.forEach((article) => {
+          if (article.slug === action.payload.article.slug) {
+            article.favorited = action.payload.article.favorited
+          }
+        })
         state.article = action.payload.article
         state.loading = false
         state.error = false

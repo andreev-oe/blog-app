@@ -14,10 +14,8 @@ const ArticlesList = () => {
   const dispatch = useAppDispatch()
   const { activePage, articlesCount } = useAppSelector((state) => state.articles)
   const { setActivePage } = articlesSlice.actions
-  useEffect(() => {
-    dispatch(getArticles(activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : 0))
-  }, [dispatch, activePage])
-  const { articles, error, loading } = useAppSelector((state) => state.articles)
+  const { articles, article, error, loading } = useAppSelector((state) => state.articles)
+  const { favorited } = article
   const showArticles =
     !loading && !error && articles
       ? articles.map((article) => <ArticlePreview key={article.slug} {...article} />)
@@ -30,6 +28,9 @@ const ArticlesList = () => {
     </div>
   ) : null
   const errorMessage = error ? <Alert showIcon type={'error'} message={ERROR_MESSAGE} /> : null
+  useEffect(() => {
+    dispatch(getArticles(activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : 0))
+  }, [dispatch, activePage, favorited])
   return (
     <>
       <section className={classes['articles-list']}>

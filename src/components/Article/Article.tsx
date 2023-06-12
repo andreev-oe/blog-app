@@ -26,6 +26,9 @@ const Article = () => {
   const { username: stateUsername, token } = useAppSelector((state) => state.user.user)
   const articleAuthor = useAppSelector((state) => state.articles.article?.author.username)
   const { favorited } = article
+  useEffect(() => {
+    console.log()
+  }, [favorited])
   const onLike = () => {
     if (slug && token) {
       const data = {
