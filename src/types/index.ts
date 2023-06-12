@@ -80,3 +80,11 @@ export interface IDeleteArticle {
     slug: string
   }
 }
+export interface IFavoriteArticle {
+  article: IArticle
+  favorited: boolean
+  token: string
+  slug: {
+    slug: string
+  }
+}

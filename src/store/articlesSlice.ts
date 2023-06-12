@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { IErrors, IState, IPostArticle, IDeleteArticle, IUpdatedArticle } from '../types'
+import { IErrors, IState, IPostArticle, IDeleteArticle, IUpdatedArticle, IFavoriteArticle } from '../types'
 
 const baseUrl = 'https://blog.kata.academy/api/'
 const defaultState: IState = {
@@ -90,6 +90,29 @@ const updateArticle = createAsyncThunk<IUpdatedArticle, IUpdatedArticle, { rejec
     return await response.json()
   }
 )
+const favoriteArticle = createAsyncThunk<IFavoriteArticle, IFavoriteArticle, { rejectValue: IErrors }>(
+  'articles/likeArticle',
+  async function (data, { rejectWithValue }) {
+    const {
+      favorited,
+      token,
+      slug: { slug },
+    } = data
+    const response = await fetch(`${baseUrl}articles/${slug}/favorite`, {
+      method: favorited ? 'DELETE' : 'POST',
+      body: JSON.stringify({ slug: slug }),
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (!response.ok) {
+      const errors = await response.json()
+      return rejectWithValue(errors)
+    }
+    return await response.json()
+  }
+)
 const deleteArticle = createAsyncThunk<IDeleteArticle, IDeleteArticle, { rejectValue: IErrors }>(
   'articles/deleteArticle',
   async function (data, { rejectWithValue }) {
@@ -155,8 +178,13 @@ const articlesSlice = createSlice({
         state.loading = false
         state.error = true
       })
+      .addCase(favoriteArticle.fulfilled, (state, action) => {
+        state.article = action.payload.article
+        state.loading = false
+        state.error = false
+      })
   },
 })
 
 export default articlesSlice.reducer
-export { articlesSlice, getArticles, getArticle, postArticle, deleteArticle, updateArticle }
+export { articlesSlice, getArticles, getArticle, postArticle, deleteArticle, updateArticle, favoriteArticle }

@@ -3,10 +3,11 @@ import React, { useEffect } from 'react'
 import { Alert, Spin, Button, message, Popconfirm } from 'antd'
 import Markdown from 'markdown-to-jsx'
 
-import { articlesSlice, getArticle, deleteArticle } from '../../store/articlesSlice'
+import { articlesSlice, getArticle, deleteArticle, favoriteArticle } from '../../store/articlesSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import classes from '../Article/Article.module.scss'
 import like from '../../assets/like.png'
+import likeActive from '../../assets/like-active.png'
 import authorDummy from '../../assets/author-dummy.png'
 
 const ERROR_MESSAGE = 'Sorry, content not loaded, check your internet connection and try to update page'
@@ -24,6 +25,20 @@ const Article = () => {
   const { article, error, loading } = useAppSelector((state) => state.articles)
   const { username: stateUsername, token } = useAppSelector((state) => state.user.user)
   const articleAuthor = useAppSelector((state) => state.articles.article?.author.username)
+  const { favorited } = article
+  const onLike = () => {
+    if (slug && token) {
+      const data = {
+        favorited,
+        article,
+        token,
+        slug: {
+          slug,
+        },
+      }
+      dispatch(favoriteArticle(data))
+    }
+  }
   const onDelete = () => {
     if (slug && token) {
       const data = {
@@ -74,8 +89,8 @@ const Article = () => {
             <div className={classes['article-content']}>
               <div className={classes['title-wrapper']}>
                 <h2 className={classes.title}>{title}</h2>
-                <button type={'button'} className={classes.button} disabled>
-                  <img className={classes['like-icon']} src={like} alt={'likes'} />
+                <button onClick={onLike} type={'button'} className={classes.button}>
+                  <img className={classes['like-icon']} src={favorited ? likeActive : like} alt={'likes'} />
                 </button>
                 <span className={classes['likes-count']}>{favoritesCount}</span>
               </div>
