@@ -36,6 +36,9 @@
   align-items: center;
   background: none;
   border: none;
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 .title {
   font-family: $font-family__secondary;

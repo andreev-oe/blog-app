@@ -84,7 +84,7 @@ const Article = () => {
             <div className={classes['article-content']}>
               <div className={classes['title-wrapper']}>
                 <h2 className={classes.title}>{title}</h2>
-                <button onClick={onLike} type={'button'} className={classes.button}>
+                <button onClick={onLike} type={'button'} className={classes.button} disabled={!token}>
                   <img className={classes['like-icon']} src={favorited ? likeActive : like} alt={'likes'} />
                 </button>
                 <span className={classes['likes-count']}>{favoritesCount}</span>

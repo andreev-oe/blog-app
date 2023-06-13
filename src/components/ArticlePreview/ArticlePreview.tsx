@@ -47,7 +47,7 @@ const ArticlePreview = ({
           <Link to={`/articles/${slug}`} className={classes.link}>
             <h2 className={classes.title}>{title}</h2>
           </Link>
-          <button onClick={onLike} type={'button'} className={classes.button}>
+          <button onClick={onLike} type={'button'} className={classes.button} disabled={!token}>
             <img className={classes['like-icon']} src={favorited ? likeActive : like} alt={'likes'} />
           </button>
           <span className={classes['likes-count']}>{favoritesCount}</span>
