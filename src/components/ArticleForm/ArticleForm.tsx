@@ -1,28 +1,30 @@
 import React from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import classes from '../ArticleForm/ArticleFrom.module.scss'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { articlesSlice, updateArticle, postArticle } from '../../store/articlesSlice'
+import { articlesSlice, updateArticle, postArticle, getArticles } from '../../store/articlesSlice'
 import { IPostArticle, IUpdatedArticle } from '../../types'
 
 interface IFormInputs {
   title: string
   description: string
   body: string
-  tag: string
+  tagList: { name: string }[]
 }
 
+const ARTICLES_PER_PAGE = 5
 const ArticleForm = () => {
   const dispatch = useAppDispatch()
   const setEdit = articlesSlice.actions.setEdit
   const { slug } = useParams()
   const navigate = useNavigate()
   const { token } = useAppSelector((state) => state.user.user)
-  const { title, description, body, tagList, edit } = useAppSelector((state) => state.articles.article)
+  const { article, activePage } = useAppSelector((state) => state.articles)
+  const { title, description, body, tagList, edit } = article
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    const { title, description, body, tag } = data
+    const { title, description, body, tagList } = data
     const updatedArticle: IUpdatedArticle = {
       token,
       slug,
@@ -30,7 +32,7 @@ const ArticleForm = () => {
         title,
         description,
         body,
-        tagList: [tag],
+        tagList: tagList.map((tag) => tag.name),
       },
     }
     const article: IPostArticle = {
@@ -38,7 +40,7 @@ const ArticleForm = () => {
         title,
         description,
         body,
-        tagList: [tag],
+        tagList: tagList.map((tag) => tag.name),
         token,
       },
     }
@@ -48,13 +50,32 @@ const ArticleForm = () => {
     } else {
       dispatch(postArticle(article))
     }
+    if (token) {
+      const data = {
+        token,
+        offset: activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : 0,
+      }
+      dispatch(getArticles(data))
+    }
     navigate('/')
   }
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<IFormInputs>()
+    control,
+  } = useForm<IFormInputs>({
+    defaultValues: {
+      title: edit ? title : '',
+      description: edit ? description : '',
+      body: edit ? body : '',
+      tagList: edit ? tagList.map((tag) => ({ name: tag })) : [{}],
+    },
+  })
+  const { fields, append, remove } = useFieldArray({
+    name: 'tagList',
+    control,
+  })
   return (
     <section className={classes.section}>
       <h2 className={classes.title}>Create new article</h2>
@@ -69,7 +90,6 @@ const ArticleForm = () => {
             id="title"
             type="text"
             placeholder={'Title'}
-            defaultValue={edit ? title : ''}
           />
           {errors.title && <span className={classes['error-text']}>{errors.title.message}</span>}
         </label>
@@ -83,7 +103,6 @@ const ArticleForm = () => {
             id="description"
             type="text"
             placeholder={'Title'}
-            defaultValue={edit ? description : ''}
           />
           {errors.description && <span className={classes['error-text']}>{errors.description.message}</span>}
         </label>
@@ -97,26 +116,53 @@ const ArticleForm = () => {
             id="text"
             rows={10}
             placeholder={'Text'}
-            defaultValue={edit ? body : ''}
           />
           {errors.body && <span className={classes['error-text']}>{errors.body.message}</span>}
         </label>
         <div className={classes['tags-wrapper']}>
-          <label htmlFor="tag" className={`${classes.label} ${classes.tags}`}>
+          <label htmlFor="tagList" className={`${classes.label} ${classes.tags}`}>
             <span>Tags</span>
-            <input
-              {...register('tag')}
-              className={`${classes.input} ${classes['input-tags']}`}
-              id="tag"
-              type="text"
-              placeholder={'Tag'}
-              defaultValue={edit ? tagList : ''}
-            />
+            {fields.map((filed, index, array) => {
+              return (
+                <div key={filed.id} className={classes['tag-error-wrapper']}>
+                  {errors.tagList && (
+                    <span className={classes['error-text']}>{errors.tagList?.[index]?.name?.message}</span>
+                  )}
+                  <div key={filed.id} className={classes['tag-wrapper']}>
+                    <input
+                      {...register(`tagList.${index}.name` as const, {
+                        required: { value: true, message: 'Tag filed cant be empty' },
+                      })}
+                      className={
+                        errors.description
+                          ? `${classes.input} ${classes['input-tags--error']}`
+                          : `${classes.input} ${classes['input-tags']}`
+                      }
+                      key={filed.id}
+                      type="text"
+                      placeholder={'Tag'}
+                    />
+                    <button
+                      onClick={() => (array.length > 1 ? remove(index) : null)}
+                      className={`${classes.action} ${classes['action--delete']}`}
+                      type="button"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
           </label>
-          <button className={`${classes.action} ${classes['action--delete']}`} type="button">
-            Delete
-          </button>
-          <button className={`${classes.action} ${classes['action--add']}`} type="button">
+          <button
+            onClick={() =>
+              append({
+                name: '',
+              })
+            }
+            className={`${classes.action} ${classes['action--add']}`}
+            type="button"
+          >
             Add tag
           </button>
         </div>

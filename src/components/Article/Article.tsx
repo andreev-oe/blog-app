@@ -12,7 +12,6 @@ import authorDummy from '../../assets/author-dummy.png'
 
 const ERROR_MESSAGE = 'Sorry, content not loaded, check your internet connection and try to update page'
 const Article = () => {
-  // TODO sometimes get TypeError: Cannot read properties of undefined (reading 'replace'). Maybe should try to reset url or check if slug already in state
   const dispatch = useAppDispatch()
   const setEdit = articlesSlice.actions.setEdit
   const navigate = useNavigate()
@@ -115,7 +114,7 @@ const Article = () => {
   }
   const spinner = loading ? (
     <div className="spinner-container">
-      <Spin tip="Loading articles...">
+      <Spin tip="Loading article...">
         <div className="content" />
       </Spin>
     </div>
@@ -133,7 +132,7 @@ const Article = () => {
     }
   }, [slug])
   return (
-    <div>
+    <div className={classes.container}>
       {showArticle}
       {spinner}
       {errorMessage}

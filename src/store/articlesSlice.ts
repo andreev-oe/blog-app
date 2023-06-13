@@ -208,6 +208,7 @@ const articlesSlice = createSlice({
         state.articles.forEach((article) => {
           if (article.slug === action.payload.article.slug) {
             article.favorited = action.payload.article.favorited
+            article.favoritesCount = action.payload.article.favoritesCount
           }
         })
         state.article = action.payload.article
