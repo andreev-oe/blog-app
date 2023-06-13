@@ -1,11 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import like from '../../assets/like.png'
-import likeActive from '../../assets/like-active.png'
+import like from '../../assets/like.svg'
+import likeActive from '../../assets/like-active.svg'
 import authorDummy from '../../assets/author-dummy.png'
 import { IArticle } from '../../types'
-import { articlesSlice, favoriteArticle } from '../../store/articlesSlice'
+import { articlesSlice } from '../../store/articlesSlice/articlesSlice'
+import { favoriteArticle } from '../../store/articlesSlice/articleActions'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 
 import classes from './ArticlePreview.module.scss'

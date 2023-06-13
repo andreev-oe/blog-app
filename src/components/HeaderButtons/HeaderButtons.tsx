@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import classes from '../HeaderButtons/HeaderButtom.module.scss'
 import UserInfo from '../UserInfo'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { authSlice } from '../../store/authSlice'
-import { articlesSlice } from '../../store/articlesSlice'
+import { authSlice } from '../../store/authSlice/authSlice'
+import { articlesSlice } from '../../store/articlesSlice/articlesSlice'
 import { route } from '../../constants/constants'
 
 const HeaderButtons = () => {

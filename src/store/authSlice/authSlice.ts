@@ -1,75 +1,13 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { IErrors, IUser, IUserData } from '../types'
+import { IUser } from '../../types'
+import { defaultUserState, USER } from '../../constants/constants'
 
-const baseUrl = 'https://blog.kata.academy/api/'
-const defaultState: IUser = {
-  user: {
-    username: JSON.parse(localStorage.getItem('user') || '""').user?.username,
-    email: JSON.parse(localStorage.getItem('user') || '""').user?.email,
-    token: JSON.parse(localStorage.getItem('user') || '""').user?.token,
-    bio: JSON.parse(localStorage.getItem('user') || '""').user?.bio,
-    image: JSON.parse(localStorage.getItem('user') || '""').user?.image,
-  },
-}
-
-const signUpUser = createAsyncThunk<IUser, object, { rejectValue: IErrors }>(
-  'user/signUpUser',
-  async function (user, { rejectWithValue }) {
-    const response = await fetch(`${baseUrl}users`, {
-      method: 'POST',
-      body: JSON.stringify(user),
-      headers: {
-        'Content-type': 'application/json',
-      },
-    })
-    if (!response.ok) {
-      const errors = await response.json()
-      return rejectWithValue(errors)
-    }
-    return await response.json()
-  }
-)
-const signInUser = createAsyncThunk<IUser, object, { rejectValue: IErrors }>(
-  'user/signInUser',
-  async function (user, { rejectWithValue }) {
-    const response = await fetch(`${baseUrl}users/login`, {
-      method: 'POST',
-      body: JSON.stringify(user),
-      headers: {
-        'Content-type': 'application/json',
-      },
-    })
-    if (!response.ok) {
-      const errors = await response.json()
-      return rejectWithValue(errors)
-    }
-    return await response.json()
-  }
-)
-const updateUser = createAsyncThunk<IUser, IUserData, { rejectValue: IErrors }>(
-  'user/updateUser',
-  async function (user, { rejectWithValue }) {
-    const { token } = user
-    const response = await fetch(`${baseUrl}user`, {
-      method: 'PUT',
-      body: JSON.stringify({ user }),
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    if (!response.ok) {
-      const errors = await response.json()
-      return rejectWithValue(errors)
-    }
-    return await response.json()
-  }
-)
+import { signInUser, signUpUser, updateUser } from './authActions'
 
 const authSlice = createSlice({
   name: 'user',
-  initialState: defaultState,
+  initialState: defaultUserState,
   reducers: {
     logOutUser(state) {
       state.user.username = ''
@@ -77,7 +15,7 @@ const authSlice = createSlice({
       state.user.token = ''
       state.user.bio = ''
       state.user.image = ''
-      localStorage.removeItem('user')
+      localStorage.removeItem(USER)
     },
   },
   extraReducers: (builder) => {
@@ -146,4 +84,4 @@ const authSlice = createSlice({
 })
 
 export default authSlice.reducer
-export { authSlice, signUpUser, signInUser, updateUser }
+export { authSlice }

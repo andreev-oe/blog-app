@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { updateUser } from '../../store/authSlice'
+import { updateUser } from '../../store/authSlice/authActions'
 import { IUserData } from '../../types'
 import { route } from '../../constants/constants'
 

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
 import {
   IErrors,
@@ -9,36 +9,8 @@ import {
   IFavoriteArticle,
   IGetArticle,
   IGetArticles,
-} from '../types'
-
-const baseUrl = 'https://blog.kata.academy/api/'
-const defaultState: IState = {
-  articles: [],
-  loading: false,
-  error: false,
-  articlesCount: 0,
-  activePage: 1,
-  activeArticleSlug: '',
-  article: {
-    slug: '',
-    edit: false,
-    title: '',
-    description: '',
-    body: '',
-    tagList: [],
-    createdAt: '',
-    updatedAt: '',
-    favorited: false,
-    favoritesCount: 0,
-    author: {
-      username: '',
-      bio: '',
-      image: '',
-      following: false,
-    },
-  },
-}
-const ARTICLES_PER_PAGE = 5
+} from '../../types'
+import { ARTICLES_PER_PAGE, baseUrl } from '../../constants/constants'
 
 const getArticles = createAsyncThunk<IState, IGetArticles, { rejectValue: boolean }>(
   'articles/getArticles',
@@ -117,7 +89,7 @@ const updateArticle = createAsyncThunk<IUpdatedArticle, IUpdatedArticle, { rejec
   }
 )
 const favoriteArticle = createAsyncThunk<IFavoriteArticle, IFavoriteArticle, { rejectValue: IErrors }>(
-  'articles/likeArticle',
+  'articles/favoriteArticle',
   async function (data, { rejectWithValue }) {
     const {
       favorited,
@@ -161,62 +133,5 @@ const deleteArticle = createAsyncThunk<IDeleteArticle, IDeleteArticle, { rejectV
     return await response.json()
   }
 )
-const articlesSlice = createSlice({
-  name: 'articles',
-  initialState: defaultState,
-  reducers: {
-    setActivePage(state, action: PayloadAction<number>) {
-      state.activePage = action.payload
-    },
-    setActiveArticleSlug(state, action: PayloadAction<string>) {
-      state.activeArticleSlug = action.payload
-    },
-    setEdit(state, action: PayloadAction<boolean>) {
-      state.article.edit = action.payload
-    },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getArticles.pending, (state) => {
-        state.loading = true
-        state.error = false
-      })
-      .addCase(getArticles.fulfilled, (state, action) => {
-        state.articles = action.payload.articles
-        state.articlesCount = action.payload.articlesCount
-        state.loading = false
-        state.error = false
-      })
-      .addCase(getArticles.rejected, (state) => {
-        state.loading = false
-        state.error = true
-      })
-      .addCase(getArticle.pending, (state) => {
-        state.loading = true
-        state.error = false
-      })
-      .addCase(getArticle.fulfilled, (state, action) => {
-        state.article = action.payload.article
-        state.loading = false
-        state.error = false
-      })
-      .addCase(getArticle.rejected, (state) => {
-        state.loading = false
-        state.error = true
-      })
-      .addCase(favoriteArticle.fulfilled, (state, action) => {
-        state.articles.forEach((article) => {
-          if (article.slug === action.payload.article.slug) {
-            article.favorited = action.payload.article.favorited
-            article.favoritesCount = action.payload.article.favoritesCount
-          }
-        })
-        state.article = action.payload.article
-        state.loading = false
-        state.error = false
-      })
-  },
-})
 
-export default articlesSlice.reducer
-export { articlesSlice, getArticles, getArticle, postArticle, deleteArticle, updateArticle, favoriteArticle }
+export { getArticles, getArticle, postArticle, deleteArticle, updateArticle, favoriteArticle }

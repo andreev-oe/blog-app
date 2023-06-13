@@ -3,7 +3,7 @@ import { Link, Navigate } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { signInUser } from '../../store/authSlice'
+import { signInUser } from '../../store/authSlice/authActions'
 import { route } from '../../constants/constants'
 
 import classes from './SignIn.module.scss'

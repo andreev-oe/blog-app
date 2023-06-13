@@ -4,7 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import classes from '../ArticleForm/ArticleFrom.module.scss'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { articlesSlice, updateArticle, postArticle, getArticles } from '../../store/articlesSlice'
+import { articlesSlice } from '../../store/articlesSlice/articlesSlice'
+import { updateArticle, postArticle, getArticles } from '../../store/articlesSlice/articleActions'
 import { IPostArticle, IUpdatedArticle } from '../../types'
 import { ARTICLES_PER_PAGE, DEFAULT_PAGE_OFFSET } from '../../constants/constants'
 
@@ -131,7 +132,7 @@ const ArticleForm = () => {
                   <div key={filed.id} className={classes['tag-wrapper']}>
                     <input
                       {...register(`tagList.${index}.name` as const, {
-                        required: { value: true, message: 'Tag filed cant be empty' },
+                        required: { value: true, message: 'Tag field can not be empty' },
                       })}
                       className={
                         errors.description
