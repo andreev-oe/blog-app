@@ -1,3 +1,5 @@
+@import '../../common-styles/variables';
+
 .articles-list {
   max-width: 941px;
   min-height: 750px;
@@ -9,16 +11,10 @@
 }
 .pagination {
   text-align: center;
-  font-family: 'Inter', sans-serif;
+  font-family: $font-family__secondary;
   font-weight: 400;
   font-size: 12px;
   line-height: 22px;
   margin-top: 20px;
   height: 40px;
-}
-.ant-pagination-item-active {
-  background-color: #1890ff !important;
-}
-.ant-pagination-item-active a {
-  color: white !important;
 }

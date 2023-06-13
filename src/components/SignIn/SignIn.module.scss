@@ -1,3 +1,5 @@
+@import '../../common-styles/variables';
+
 .section {
   padding: 32px;
   margin: 60px auto 0;
@@ -11,7 +13,7 @@
   height: auto;
   box-sizing: border-box;
   color: #262626;
-  font-family: 'Roboto', sans-serif;
+  font-family: $font-family__main;
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
@@ -58,7 +60,7 @@
 }
 .button {
   cursor: pointer;
-  font-family: 'Roboto', sans-serif;
+  font-family: $font-family__main;
   font-size: 16px;
   line-height: 24px;
   color: #ffffff;

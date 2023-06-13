@@ -1,3 +1,5 @@
+@import '../../common-styles/variables';
+
 .header {
   display: flex;
   background: #ffffff;
@@ -7,7 +9,7 @@
 .header-title {
   flex: 1;
   color: rgba(0, 0, 0, 0.85);
-  font-family: 'Inter', sans-serif;
+  font-family: $font-family__secondary;
   font-weight: 400;
   font-size: 18px;
   line-height: 28px;
