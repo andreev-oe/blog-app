@@ -6,6 +6,7 @@ import classes from '../ArticleForm/ArticleFrom.module.scss'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { articlesSlice, updateArticle, postArticle, getArticles } from '../../store/articlesSlice'
 import { IPostArticle, IUpdatedArticle } from '../../types'
+import { ARTICLES_PER_PAGE, DEFAULT_PAGE_OFFSET } from '../../constants/constants'
 
 interface IFormInputs {
   title: string
@@ -14,7 +15,6 @@ interface IFormInputs {
   tagList: { name: string }[]
 }
 
-const ARTICLES_PER_PAGE = 5
 const ArticleForm = () => {
   const dispatch = useAppDispatch()
   const setEdit = articlesSlice.actions.setEdit
@@ -53,7 +53,7 @@ const ArticleForm = () => {
     if (token) {
       const data = {
         token,
-        offset: activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : 0,
+        offset: activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : DEFAULT_PAGE_OFFSET,
       }
       dispatch(getArticles(data))
     }

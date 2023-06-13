@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { signUpUser } from '../../store/authSlice'
+import { route } from '../../constants/constants'
 
 import classes from './SignUp.module.scss'
 
@@ -135,13 +136,13 @@ const SignUp = () => {
       </form>
       <p className={classes.info}>
         Already have an account?{' '}
-        <Link className={classes.link} to="/sign-in">
+        <Link className={classes.link} to={`/${route.SignIn}`}>
           Sign In.
         </Link>
       </p>
     </section>
   )
-  return username ? <Navigate to={'/'} /> : signUpPage
+  return username ? <Navigate to={route.MainPage} /> : signUpPage
 }
 
 export default SignUp

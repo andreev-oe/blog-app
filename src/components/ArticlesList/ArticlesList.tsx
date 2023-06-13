@@ -5,9 +5,9 @@ import classes from '../ArticlesList/ArticlesList.module.scss'
 import ArticlePreview from '../ArticlePreview'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { articlesSlice, getArticles } from '../../store/articlesSlice'
+import { ARTICLES_PER_PAGE, DEFAULT_PAGE_OFFSET } from '../../constants/constants'
 
 const ERROR_MESSAGE = 'Sorry, content not loaded, check your internet connection and try to update page'
-const ARTICLES_PER_PAGE = 5
 
 const ArticlesList = () => {
   // TODO style spinner and pagination
@@ -33,7 +33,7 @@ const ArticlesList = () => {
     if (token) {
       const data = {
         token,
-        offset: activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : 0,
+        offset: activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : DEFAULT_PAGE_OFFSET,
       }
       dispatch(getArticles(data))
     }

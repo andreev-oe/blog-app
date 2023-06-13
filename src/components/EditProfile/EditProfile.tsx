@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { updateUser } from '../../store/authSlice'
 import { IUserData } from '../../types'
+import { route } from '../../constants/constants'
 
 import classes from './EditProfile.module.scss'
 
@@ -36,7 +37,7 @@ const EditProfile = () => {
     }
     dispatch(updateUser(user))
     if (!Object.entries(errors).length) {
-      navigate('/')
+      navigate(route.MainPage)
     }
   }
   const {

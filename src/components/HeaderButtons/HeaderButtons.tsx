@@ -6,6 +6,7 @@ import UserInfo from '../UserInfo'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { authSlice } from '../../store/authSlice'
 import { articlesSlice } from '../../store/articlesSlice'
+import { route } from '../../constants/constants'
 
 const HeaderButtons = () => {
   const setEdit = articlesSlice.actions.setEdit
@@ -14,18 +15,18 @@ const HeaderButtons = () => {
   const logOutUser = authSlice.actions.logOutUser
   const logOut = () => {
     dispatch(logOutUser())
-    navigate('/')
+    navigate(route.MainPage)
   }
   const user = useAppSelector((state) => state.user.user)
   const userInInLocalStorage = JSON.parse(localStorage.getItem('user') || '""')
   const userLoggedJSX = (
     <>
-      <Link to={'/new-article'}>
+      <Link to={`/${route.ArticleForm}`}>
         <button onClick={() => dispatch(setEdit(false))} className={`${classes['article-button']} ${classes.button}`}>
           Create article
         </button>
       </Link>
-      <Link to={'/profile'}>
+      <Link to={`/${route.EditProfile}`}>
         <button className={`${classes.profile} ${classes.button}`}>
           <UserInfo />
         </button>
@@ -37,10 +38,10 @@ const HeaderButtons = () => {
   )
   const userNotLoggedJSX = (
     <>
-      <Link to={'/sign-in'}>
+      <Link to={`/${route.SignIn}`}>
         <button className={`${classes['sign-in']} ${classes.button}`}>Sign In</button>
       </Link>
-      <Link to={'/sign-up'}>
+      <Link to={`/${route.SignUp}`}>
         <button className={`${classes['sign-up']} ${classes.button}`}>Sign Up</button>
       </Link>
     </>

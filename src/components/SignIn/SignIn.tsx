@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { signInUser } from '../../store/authSlice'
+import { route } from '../../constants/constants'
 
 import classes from './SignIn.module.scss'
 
@@ -33,7 +34,7 @@ const SignIn = () => {
   } = useForm<IFormInputs>()
   const signInPage = (
     <section className={classes.section}>
-      {username ? <Navigate to={'/'} /> : ''}
+      {username ? <Navigate to={route.MainPage} /> : ''}
       <h2 className={classes.title}>Sign In</h2>
       <form noValidate onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <label htmlFor="email" className={classes.label}>
@@ -72,13 +73,13 @@ const SignIn = () => {
       </form>
       <p className={classes.info}>
         Don’t have an account?{' '}
-        <Link className={classes.link} to="/sign-up">
+        <Link className={classes.link} to={`/${route.SignUp}`}>
           Sign Up.
         </Link>
       </p>
     </section>
   )
-  return username ? <Navigate to={'/'} /> : signInPage
+  return username ? <Navigate to={route.MainPage} /> : signInPage
 }
 
 export default SignIn

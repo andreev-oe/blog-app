@@ -9,6 +9,7 @@ import SignIn from '../SignIn'
 import EditProfile from '../EditProfile'
 import ArticleForm from '../ArticleForm'
 import PrivateRoute from '../PrivateRoute/PrivateRoute'
+import { route } from '../../constants/constants'
 
 import classes from './App.module.scss'
 
@@ -17,22 +18,22 @@ function App() {
     <div className={classes['page-wrapper']}>
       <BrowserRouter>
         <Routes>
-          <Route path={'/'} element={<MainPage />}>
+          <Route path={route.MainPage} element={<MainPage />}>
             <Route index element={<ArticlesList />} />
-            <Route path={'articles'} element={<ArticlesList />} />
-            <Route path={'articles/:slug'} element={<Article />} />
-            <Route path={'sign-up'} element={<SignUp />} />
-            <Route path={'sign-in'} element={<SignIn />} />
-            <Route path={'profile'} element={<EditProfile />} />
+            <Route path={route.ArticlesList} element={<ArticlesList />} />
+            <Route path={route.Article} element={<Article />} />
+            <Route path={route.SignUp} element={<SignUp />} />
+            <Route path={route.SignIn} element={<SignIn />} />
+            <Route path={route.EditProfile} element={<EditProfile />} />
             <Route
-              path={'new-article'}
+              path={route.ArticleForm}
               element={
                 <PrivateRoute>
                   <ArticleForm />
                 </PrivateRoute>
               }
             />
-            <Route path={'articles/:slug/edit'} element={<ArticleForm />} />
+            <Route path={route.EditArticle} element={<ArticleForm />} />
           </Route>
         </Routes>
       </BrowserRouter>
