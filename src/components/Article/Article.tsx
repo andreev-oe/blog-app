@@ -122,7 +122,7 @@ const Article = () => {
   ) : null
   const errorMessage = error ? <Alert showIcon type={'error'} message={ERROR_MESSAGE} /> : null
   useEffect(() => {
-    if (slug && token) {
+    if (slug) {
       const data = {
         token,
         slug: {

@@ -89,12 +89,12 @@ export interface IFavoriteArticle {
   }
 }
 export interface IGetArticle {
-  token: string
+  token: string | undefined
   slug: {
     slug: string
   }
 }
 export interface IGetArticles {
   offset: number
-  token: string
+  token: string | undefined
 }

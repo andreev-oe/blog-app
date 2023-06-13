@@ -11,7 +11,6 @@ import { ARTICLES_PER_PAGE, DEFAULT_PAGE_OFFSET } from '../../constants/constant
 const ERROR_MESSAGE = 'Sorry, content not loaded, check your internet connection and try to update page'
 
 const ArticlesList = () => {
-  // TODO style spinner and pagination
   const dispatch = useAppDispatch()
   const { activePage, articlesCount } = useAppSelector((state) => state.articles)
   const { setActivePage } = articlesSlice.actions
@@ -31,13 +30,11 @@ const ArticlesList = () => {
   const errorMessage = error ? <Alert showIcon type={'error'} message={ERROR_MESSAGE} /> : null
   const { token } = useAppSelector((state) => state.user.user)
   useEffect(() => {
-    if (token) {
-      const data = {
-        token,
-        offset: activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : DEFAULT_PAGE_OFFSET,
-      }
-      dispatch(getArticles(data))
+    const data = {
+      token,
+      offset: activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : DEFAULT_PAGE_OFFSET,
     }
+    dispatch(getArticles(data))
   }, [dispatch, activePage, favorited])
   return (
     <>
