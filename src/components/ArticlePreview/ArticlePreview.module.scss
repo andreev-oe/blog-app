@@ -47,6 +47,7 @@
   font-weight: 400;
   font-size: 20px;
   line-height: 28px;
+  overflow-wrap: anywhere;
 }
 .like-icon {
   width: 16px;
@@ -73,6 +74,7 @@
   border: 1px solid rgba(0, 0, 0, 0.75);
   border-radius: 2px;
   padding: 3px 6px 2px;
+  overflow-wrap: anywhere;
   &__secondary {
     color: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(0, 0, 0, 0.5);
@@ -85,6 +87,7 @@
   font-size: 12px;
   line-height: 22px;
   color: rgba(0, 0, 0, 0.75);
+  overflow-wrap: anywhere;
 }
 .article-author {
   display: flex;
