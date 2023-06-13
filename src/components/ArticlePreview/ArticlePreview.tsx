@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import like from '../../assets/like.png'
@@ -39,9 +39,6 @@ const ArticlePreview = ({
       dispatch(favoriteArticle(data))
     }
   }
-  useEffect(() => {
-    console.log()
-  }, [favorited])
   return (
     <article className={classes.article}>
       <div className={classes['article-content']}>

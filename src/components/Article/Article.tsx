@@ -17,18 +17,10 @@ const Article = () => {
   const setEdit = articlesSlice.actions.setEdit
   const navigate = useNavigate()
   const { slug } = useParams()
-  useEffect(() => {
-    if (slug) {
-      dispatch(getArticle(slug))
-    }
-  }, [slug])
   const { article, error, loading } = useAppSelector((state) => state.articles)
   const { username: stateUsername, token } = useAppSelector((state) => state.user.user)
   const articleAuthor = useAppSelector((state) => state.articles.article?.author.username)
   const { favorited } = article
-  useEffect(() => {
-    console.log()
-  }, [favorited])
   const onLike = () => {
     if (slug && token) {
       const data = {
@@ -129,6 +121,17 @@ const Article = () => {
     </div>
   ) : null
   const errorMessage = error ? <Alert showIcon type={'error'} message={ERROR_MESSAGE} /> : null
+  useEffect(() => {
+    if (slug && token) {
+      const data = {
+        token,
+        slug: {
+          slug,
+        },
+      }
+      dispatch(getArticle(data))
+    }
+  }, [slug])
   return (
     <div>
       {showArticle}

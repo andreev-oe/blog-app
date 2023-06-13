@@ -88,3 +88,13 @@ export interface IFavoriteArticle {
     slug: string
   }
 }
+export interface IGetArticle {
+  token: string
+  slug: {
+    slug: string
+  }
+}
+export interface IGetArticles {
+  offset: number
+  token: string
+}

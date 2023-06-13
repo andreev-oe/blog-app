@@ -1,6 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { IErrors, IState, IPostArticle, IDeleteArticle, IUpdatedArticle, IFavoriteArticle } from '../types'
+import {
+  IErrors,
+  IState,
+  IPostArticle,
+  IDeleteArticle,
+  IUpdatedArticle,
+  IFavoriteArticle,
+  IGetArticle,
+  IGetArticles,
+} from '../types'
 
 const baseUrl = 'https://blog.kata.academy/api/'
 const defaultState: IState = {
@@ -31,20 +40,37 @@ const defaultState: IState = {
 }
 const ARTICLES_PER_PAGE = 5
 
-const getArticles = createAsyncThunk<IState, number, { rejectValue: boolean }>(
+const getArticles = createAsyncThunk<IState, IGetArticles, { rejectValue: boolean }>(
   'articles/getArticles',
-  async function (offset, { rejectWithValue }) {
-    const response = await fetch(`${baseUrl}articles?limit=${ARTICLES_PER_PAGE}&offset=${offset}`)
+  async function (data, { rejectWithValue }) {
+    const { offset, token } = data
+    const response = await fetch(`${baseUrl}articles?limit=${ARTICLES_PER_PAGE}&offset=${offset}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
     if (!response.ok) {
       return rejectWithValue(true)
     }
     return await response.json()
   }
 )
-const getArticle = createAsyncThunk<IState, string, { rejectValue: boolean }>(
+const getArticle = createAsyncThunk<IState, IGetArticle, { rejectValue: boolean }>(
   'articles/getArticle',
-  async function (slug, { rejectWithValue }) {
-    const response = await fetch(`${baseUrl}articles/${slug}`)
+  async function (data, { rejectWithValue }) {
+    const {
+      token,
+      slug: { slug },
+    } = data
+    const response = await fetch(`${baseUrl}articles/${slug}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
     if (!response.ok) {
       return rejectWithValue(true)
     }

@@ -28,8 +28,15 @@ const ArticlesList = () => {
     </div>
   ) : null
   const errorMessage = error ? <Alert showIcon type={'error'} message={ERROR_MESSAGE} /> : null
+  const { token } = useAppSelector((state) => state.user.user)
   useEffect(() => {
-    dispatch(getArticles(activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : 0))
+    if (token) {
+      const data = {
+        token,
+        offset: activePage > 1 ? (activePage - 1) * ARTICLES_PER_PAGE : 0,
+      }
+      dispatch(getArticles(data))
+    }
   }, [dispatch, activePage, favorited])
   return (
     <>
