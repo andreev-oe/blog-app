@@ -10,6 +10,7 @@ import EditProfile from '../EditProfile'
 import ArticleForm from '../ArticleForm'
 import PrivateRoute from '../PrivateRoute/PrivateRoute'
 import { route } from '../../constants/constants'
+import NotFoundPage from '../NotFoundPage'
 
 import classes from './App.module.scss'
 
@@ -34,6 +35,7 @@ function App() {
               }
             />
             <Route path={route.EditArticle} element={<ArticleForm />} />
+            <Route path={route.NotFound} element={<NotFoundPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

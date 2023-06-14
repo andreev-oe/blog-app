@@ -9,6 +9,7 @@ const route = {
   EditProfile: 'profile',
   ArticleForm: 'new-article',
   EditArticle: 'articles/:slug/edit',
+  NotFound: '*',
 }
 const defaultArticlesState: IState = {
   articles: [],
