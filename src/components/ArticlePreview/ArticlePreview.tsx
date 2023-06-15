@@ -66,7 +66,7 @@ const ArticlePreview = ({
       <div className={classes['article-author']}>
         <div className={classes['author-wrapper']}>
           <p className={classes['author-name']}>{username}</p>
-          <p className={classes.date}>{format(new Date(createdAt), DATE_FORMAT)}</p>
+          <p className={classes.date}>{createdAt ? format(new Date(createdAt), DATE_FORMAT) : ''}</p>
         </div>
         <img className={classes['author-photo']} src={image ? image : authorDummy} alt={'author-photo'} />
       </div>
