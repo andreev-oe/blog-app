@@ -64,6 +64,7 @@
 .tags {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 .tag {
   font-family: $font-family__secondary;
