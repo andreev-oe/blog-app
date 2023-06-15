@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { format } from 'date-fns'
 
 import like from '../../assets/like.svg'
 import likeActive from '../../assets/like-active.svg'
@@ -11,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 
 import classes from './ArticlePreview.module.scss'
 
+const DATE_FORMAT = 'MMMM d, yyyy'
 const ArticlePreview = ({
   title,
   favoritesCount,
@@ -64,7 +66,7 @@ const ArticlePreview = ({
       <div className={classes['article-author']}>
         <div className={classes['author-wrapper']}>
           <p className={classes['author-name']}>{username}</p>
-          <p className={classes.date}>{createdAt}</p>
+          <p className={classes.date}>{format(new Date(createdAt), DATE_FORMAT)}</p>
         </div>
         <img className={classes['author-photo']} src={image ? image : authorDummy} alt={'author-photo'} />
       </div>

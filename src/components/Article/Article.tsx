@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect } from 'react'
 import { Alert, Spin, Button, message, Popconfirm } from 'antd'
 import Markdown from 'markdown-to-jsx'
+import { format } from 'date-fns'
 
 import { articlesSlice } from '../../store/articlesSlice/articlesSlice'
 import { getArticle, deleteArticle, favoriteArticle } from '../../store/articlesSlice/articleActions'
@@ -12,6 +13,7 @@ import likeActive from '../../assets/like-active.svg'
 import authorDummy from '../../assets/author-dummy.png'
 
 const ERROR_MESSAGE = 'Sorry, content not loaded, check your internet connection and try to update page'
+const DATE_FORMAT = 'MMMM d, yyyy'
 const Article = () => {
   const dispatch = useAppDispatch()
   const setEdit = articlesSlice.actions.setEdit
@@ -103,7 +105,7 @@ const Article = () => {
               <div className={classes['article-author']}>
                 <div>
                   <p className={classes['author-name']}>{username}</p>
-                  <p className={classes.date}>{createdAt}</p>
+                  <p className={classes.date}>{format(new Date(createdAt), DATE_FORMAT)}</p>
                 </div>
                 <img className={classes['author-photo']} src={image ? image : authorDummy} alt={'author-photo'} />
               </div>
